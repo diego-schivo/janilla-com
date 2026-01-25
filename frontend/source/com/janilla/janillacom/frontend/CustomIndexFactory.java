@@ -5,12 +5,12 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 import com.janilla.web.ResourceMap;
-import com.janilla.websitetemplate.frontend.DataFetching;
-import com.janilla.websitetemplate.frontend.IndexFactory;
+import com.janilla.websitetemplate.frontend.WebsiteDataFetching;
+import com.janilla.websitetemplate.frontend.WebsiteIndexFactory;
 
-public class CustomIndexFactory extends IndexFactory {
+public class CustomIndexFactory extends WebsiteIndexFactory {
 
-	public CustomIndexFactory(Properties configuration, String configurationKey, DataFetching dataFetching,
+	public CustomIndexFactory(Properties configuration, String configurationKey, WebsiteDataFetching dataFetching,
 			ResourceMap resourceMap) {
 		super(configuration, configurationKey, dataFetching, resourceMap);
 	}

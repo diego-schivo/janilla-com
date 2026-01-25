@@ -31,9 +31,9 @@ public class JanillaFullstack extends WebsiteFullstack {
 
 			JanillaFullstack a;
 			{
-				var f = new DiFactory(Stream.of(WebsiteFullstack.class, JanillaFullstack.class)
-						.flatMap(x -> Java.getPackageClasses(x.getPackageName()).stream()).toList(),
-//						INSTANCE::get, 
+				var f = new DiFactory(
+						Stream.of(WebsiteFullstack.class, JanillaFullstack.class)
+								.flatMap(x -> Java.getPackageClasses(x.getPackageName()).stream()).toList(),
 						"fullstack");
 				a = f.create(JanillaFullstack.class,
 						Java.hashMap("diFactory", f, "configurationFile",

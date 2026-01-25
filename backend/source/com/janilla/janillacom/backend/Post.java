@@ -32,22 +32,22 @@ import com.janilla.backend.cms.Types;
 import com.janilla.backend.cms.Versions;
 import com.janilla.backend.persistence.Index;
 import com.janilla.backend.persistence.Store;
+import com.janilla.blanktemplate.backend.Media;
+import com.janilla.blanktemplate.backend.BlankUser;
 import com.janilla.websitetemplate.backend.Banner;
 import com.janilla.websitetemplate.backend.CallToAction;
 import com.janilla.websitetemplate.backend.Category;
-import com.janilla.websitetemplate.backend.Media;
 import com.janilla.websitetemplate.backend.MediaBlock;
 import com.janilla.websitetemplate.backend.Meta;
 import com.janilla.websitetemplate.backend.Post0;
 import com.janilla.websitetemplate.backend.RichText;
-import com.janilla.websitetemplate.backend.User;
 
 @Store
 @Versions(drafts = true)
 public record Post(Long id, String title, @Types(Media.class) Long heroImage, List<@Types( {
 		Banner.class, CallToAction.class, MediaBlock.class, RichText.class }) Object> content,
 		List<@Types(Post.class) Long> relatedPosts, List<@Types(Category.class) Long> categories, Meta meta,
-		@Index String slug, List<@Types(User.class) Long> authors, Instant createdAt, Instant updatedAt,
+		@Index String slug, List<@Types(BlankUser.class) Long> authors, Instant createdAt, Instant updatedAt,
 		DocumentStatus documentStatus, Instant publishedAt) implements Post0{
 
 	@Override
