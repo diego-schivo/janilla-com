@@ -21,7 +21,7 @@ public class JanillaBackend extends WebsiteBackend {
 			{
 				var f = new DiFactory(
 						Stream.of(WebsiteBackend.class, JanillaBackend.class)
-								.flatMap(x -> Java.getPackageClasses(x.getPackageName()).stream()).toList());
+								.flatMap(x -> Java.getPackageClasses(x.getPackageName(), true).stream()).toList());
 //						INSTANCE::get);
 				a = f.create(JanillaBackend.class,
 						Java.hashMap("diFactory", f, "configurationFile",

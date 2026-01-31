@@ -22,20 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import Link from "/link.js";
+package com.janilla.janillacom.backend;
 
-export default class CustomLink extends Link {
+import com.janilla.backend.cms.DocumentReference;
+import com.janilla.backend.cms.Types;
+import com.janilla.websitetemplate.backend.Link;
+import com.janilla.websitetemplate.backend.LinkAppearance;
+import com.janilla.websitetemplate.backend.LinkType;
+import com.janilla.websitetemplate.backend.Page;
 
-    static get templateNames() {
-        return ["link"];
-    }
-
-    static get observedAttributes() {
-        return ["data-document", "data-href", "data-target"];
-    }
-
-    href() {
-        const [t, s] = this.dataset.document ? this.dataset.document.split(":") : [];
-        return t === "Application" ? `${location.protocol}//${s}.${location.host}` : super.href();
-    }
+public record LinkImpl(LinkType type, Boolean newTab, @Types( {
+		Page.class, PostImpl.class, Application.class }) DocumentReference<?, ?> document, String uri, String text,
+		LinkAppearance appearance) implements Link{
 }

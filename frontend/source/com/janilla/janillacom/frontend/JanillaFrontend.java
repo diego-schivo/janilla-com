@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import javax.net.ssl.SSLContext;
 
+import com.janilla.blanktemplate.frontend.BlankFrontend;
 import com.janilla.http.HttpServer;
 import com.janilla.ioc.DiFactory;
 import com.janilla.java.Java;
@@ -20,9 +21,8 @@ public class JanillaFrontend extends WebsiteFrontend {
 		try {
 			JanillaFrontend a;
 			{
-				var f = new DiFactory(
-						Stream.of(WebsiteFrontend.class, JanillaFrontend.class)
-								.flatMap(x -> Java.getPackageClasses(x.getPackageName()).stream()).toList());
+				var f = new DiFactory(Stream.of(WebsiteFrontend.class, JanillaFrontend.class)
+						.flatMap(x -> Java.getPackageClasses(x.getPackageName(), true).stream()).toList());
 //						INSTANCE::get);
 				a = f.create(JanillaFrontend.class,
 						Java.hashMap("diFactory", f, "configurationFile",
@@ -67,9 +67,15 @@ public class JanillaFrontend extends WebsiteFrontend {
 	}
 
 	@Override
-	protected List<Path> resourcePaths() {
-		return Stream.concat(super.resourcePaths().stream(),
-				Java.getPackagePaths(JanillaFrontend.class.getPackageName()).stream().filter(Files::isRegularFile))
+	protected Map<String, List<Path>> resourcePaths() {
+		var pp1 = Java.getPackagePaths("com.janilla.frontend.cms", false).filter(Files::isRegularFile).toList();
+		var pp2 = Java.getPackagePaths(BlankFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
 				.toList();
+		var pp3 = Java.getPackagePaths(WebsiteFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+				.toList();
+		var pp4 = Stream
+				.of("com.janilla.frontend", "com.janilla.frontend.resources", JanillaFrontend.class.getPackageName())
+				.flatMap(x -> Java.getPackagePaths(x, false).filter(Files::isRegularFile)).toList();
+		return Map.of("/cms", pp1, "/blank", pp2, "/website", pp3, "", pp4);
 	}
 }

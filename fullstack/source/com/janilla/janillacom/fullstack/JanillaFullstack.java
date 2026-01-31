@@ -1,8 +1,6 @@
 package com.janilla.janillacom.fullstack;
 
-import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +8,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import javax.net.ssl.SSLContext;
-
+import com.janilla.blanktemplate.fullstack.BlankFullstack;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
-import com.janilla.http.HttpServer;
 import com.janilla.ioc.DiFactory;
 import com.janilla.janillacom.backend.Application;
 import com.janilla.janillacom.backend.JanillaBackend;
@@ -26,47 +22,12 @@ import com.janilla.websitetemplate.fullstack.WebsiteFullstack;
 public class JanillaFullstack extends WebsiteFullstack {
 
 	public static void main(String[] args) {
-		try {
-			IO.println(ProcessHandle.current().pid());
-
-			JanillaFullstack a;
-			{
-				var f = new DiFactory(
-						Stream.of(WebsiteFullstack.class, JanillaFullstack.class)
-								.flatMap(x -> Java.getPackageClasses(x.getPackageName()).stream()).toList(),
-						"fullstack");
-				a = f.create(JanillaFullstack.class,
-						Java.hashMap("diFactory", f, "configurationFile",
-								args.length > 0 ? Path.of(
-										args[0].startsWith("~") ? System.getProperty("user.home") + args[0].substring(1)
-												: args[0])
-										: null));
-			}
-
-			SSLContext c;
-			{
-				var p = a.configuration.getProperty(a.configurationKey() + ".fullstack.server.keystore.path");
-				var w = a.configuration.getProperty(a.configurationKey() + ".fullstack.server.keystore.password");
-				if (p.startsWith("~"))
-					p = System.getProperty("user.home") + p.substring(1);
-				var f = Path.of(p);
-				if (!Files.exists(f))
-					Java.generateKeyPair(f, w);
-				try (var s = Files.newInputStream(f)) {
-					c = Java.sslContext(s, w.toCharArray());
-				}
-			}
-
-			HttpServer s;
-			{
-				var p = Integer.parseInt(a.configuration.getProperty(a.configurationKey() + ".fullstack.server.port"));
-				s = a.diFactory.create(HttpServer.class,
-						Map.of("sslContext", c, "endpoint", new InetSocketAddress(p), "handler", a.handler));
-			}
-			s.serve();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+		IO.println(ProcessHandle.current().pid());
+		var f = new DiFactory(Stream
+				.of(BlankFullstack.class.getPackageName(), WebsiteFullstack.class.getPackageName(),
+						JanillaFullstack.class.getPackageName())
+				.flatMap(x -> Java.getPackageClasses(x, true).stream()).toList(), "fullstack");
+		serve(f, JanillaFullstack.class, args.length > 0 ? args[0] : null);
 	}
 
 	protected final Map<String, Object> applications = new ConcurrentHashMap<>();
@@ -99,7 +60,7 @@ public class JanillaFullstack extends WebsiteFullstack {
 				try {
 					var c = Class.forName(a.fullstack());
 					var f = new DiFactory(Stream.of("com.janilla.web", c.getPackageName())
-							.flatMap(x -> Java.getPackageClasses(x).stream()).toList(), "fullstack");
+							.flatMap(x -> Java.getPackageClasses(x, true).stream()).toList(), "fullstack");
 					return f.create(c, Java.hashMap("diFactory", f, "configurationFile",
 							Optional.ofNullable(configurationFile).orElseGet(() -> {
 								try {
@@ -120,7 +81,7 @@ public class JanillaFullstack extends WebsiteFullstack {
 	protected List<Class<?>> backendTypes() {
 		return Stream.concat(super.backendTypes().stream(),
 				Stream.of(JanillaBackend.class.getPackageName(), JanillaFullstack.class.getPackageName())
-						.flatMap(x -> Java.getPackageClasses(x).stream()))
+						.flatMap(x -> Java.getPackageClasses(x, true).stream()))
 				.toList();
 	}
 
@@ -128,7 +89,7 @@ public class JanillaFullstack extends WebsiteFullstack {
 	protected List<Class<?>> frontendTypes() {
 		return Stream.concat(super.frontendTypes().stream(),
 				Stream.of(JanillaFrontend.class.getPackageName(), JanillaFullstack.class.getPackageName())
-						.flatMap(x -> Java.getPackageClasses(x).stream()))
+						.flatMap(x -> Java.getPackageClasses(x, true).stream()))
 				.toList();
 	}
 

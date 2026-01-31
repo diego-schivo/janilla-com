@@ -27,7 +27,7 @@ package com.janilla.janillacom.backend;
 import java.util.List;
 
 import com.janilla.blanktemplate.backend.Media;
-import com.janilla.blanktemplate.backend.BlankUser;
+import com.janilla.blanktemplate.backend.UserImpl;
 import com.janilla.websitetemplate.backend.Category;
 import com.janilla.websitetemplate.backend.Form;
 import com.janilla.websitetemplate.backend.FormSubmission;
@@ -35,7 +35,7 @@ import com.janilla.websitetemplate.backend.Page;
 import com.janilla.websitetemplate.backend.Redirect;
 import com.janilla.websitetemplate.backend.SearchResult;
 
-public record Collections(List<Application> applications, List<Page> pages, List<Post> posts, List<Media> media,
-		List<Category> categories, List<BlankUser> users, List<Redirect> redirects, List<Form> forms,
+public record Collections(List<Application> applications, List<Page> pages, List<PostImpl> posts, List<Media> media,
+		List<Category> categories, List<UserImpl> users, List<Redirect> redirects, List<Form> forms,
 		List<FormSubmission> formSubmissions, List<SearchResult> searchResults) {
 }

@@ -22,15 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import Post from "/post.js";
+import WebsitePost from "website/post";
 
-export default class CustomPost extends Post {
+export default class Post extends WebsitePost {
 
-	static get observedAttributes() {
-		return ["data-slug"];
-	}
+    static get moduleUrl() {
+        return import.meta.url;
+    }
 
-	static get templateNames() {
-		return ["post", "custom-post"];
-	}
+    static get templateNames() {
+        return ["/website/post", "post"];
+    }
+
+    static get observedAttributes() {
+        return ["data-slug"];
+    }
 }

@@ -22,19 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.janillacom.backend;
-
-import java.util.function.Predicate;
-
-import com.janilla.backend.persistence.Persistence;
-import com.janilla.http.HttpExchange;
-import com.janilla.web.Handle;
-import com.janilla.websitetemplate.backend.PostApi0;
-
-@Handle(path = "/api/posts")
-public class PostApi extends PostApi0<PostImpl> {
-
-	public PostApi(Predicate<HttpExchange> drafts, Persistence persistence) {
-		super(PostImpl.class, drafts, persistence);
-	}
-}
+@import "website/app.css";
+@import "geist-font.css";
+@import "janilla-logo.css";
+@import "lucide-icon.css";
+@import "toaster.css";

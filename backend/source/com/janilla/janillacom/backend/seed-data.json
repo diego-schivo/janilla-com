@@ -13,6 +13,13 @@
 			"title": "Website Template",
 			"slug": "website-template",
 			"fullstack": "com.janilla.websitetemplate.fullstack.WebsiteFullstack"
+		},
+		{
+			"$type": "Application",
+			"id": 3,
+			"title": "Ecommerce Template",
+			"slug": "ecommerce-template",
+			"fullstack": "com.janilla.ecommercetemplate.fullstack.EcommerceFullstack"
 		}
 	],
 	"categories": [
@@ -58,19 +65,19 @@
 		"id": 1,
 		"navItems": [
 			{
-				"$type": "Link1",
+				"$type": "LinkImpl",
 				"type": "CUSTOM",
 				"uri": "/admin",
 				"text": "Admin"
 			},
 			{
-				"$type": "Link1",
+				"$type": "LinkImpl",
 				"type": "CUSTOM",
 				"uri": "https://github.com/diego-schivo/website-template",
 				"text": "Source Code"
 			},
 			{
-				"$type": "Link1",
+				"$type": "LinkImpl",
 				"type": "CUSTOM",
 				"uri": "https://janilla.com/",
 				"text": "Janilla"
@@ -135,13 +142,13 @@
 		"id": 1,
 		"navItems": [
 			{
-				"$type": "Link1",
+				"$type": "LinkImpl",
 				"type": "CUSTOM",
 				"uri": "/posts",
 				"text": "Posts"
 			},
 			{
-				"$type": "Link1",
+				"$type": "LinkImpl",
 				"type": "REFERENCE",
 				"document": {
 					"$type": "DocumentReference",
@@ -205,14 +212,14 @@
 				"richText": "<h1>The vanilla foundation to build the modern web</h1><p>Janilla leverages standard technologies and principles to let you develop overengineering-free equivalent of web applications relying on heavy frameworks.</p>",
 				"links": [
 					{
-						"$type": "Link1",
+						"$type": "LinkImpl",
 						"type": "CUSTOM",
 						"uri": "/posts",
 						"text": "All posts",
 						"appearance": "DEFAULT"
 					},
 					{
-						"$type": "Link1",
+						"$type": "LinkImpl",
 						"type": "CUSTOM",
 						"uri": "/contact",
 						"text": "Contact",
@@ -331,7 +338,7 @@
 	],
 	"posts": [
 		{
-			"$type": "Post",
+			"$type": "PostImpl",
 			"id": 1,
 			"title": "Blank Template",
 			"heroImage": 1,
@@ -341,7 +348,7 @@
 					"richText": "<p>Preview</p>",
 					"links": [
 						{
-							"$type": "Link1",
+							"$type": "LinkImpl",
 							"type": "REFERENCE",
 							"newTab": true,
 							"document": {
@@ -365,7 +372,7 @@
 			"documentStatus": "PUBLISHED"
 		},
 		{
-			"$type": "Post",
+			"$type": "PostImpl",
 			"id": 2,
 			"title": "Website Template",
 			"heroImage": 2,
@@ -375,7 +382,7 @@
 					"richText": "<p>Preview</p>",
 					"links": [
 						{
-							"$type": "Link1",
+							"$type": "LinkImpl",
 							"type": "REFERENCE",
 							"newTab": true,
 							"document": {
@@ -397,13 +404,47 @@
 			},
 			"slug": "website-template",
 			"documentStatus": "PUBLISHED"
+		},
+		{
+			"$type": "PostImpl",
+			"id": 3,
+			"title": "Ecommerce Template",
+			"heroImage": 3,
+			"content": [
+				{
+					"$type": "CallToAction",
+					"richText": "<p>Preview</p>",
+					"links": [
+						{
+							"$type": "LinkImpl",
+							"type": "REFERENCE",
+							"newTab": true,
+							"document": {
+								"$type": "DocumentReference",
+								"type": "Application",
+								"id": 3
+							},
+							"text": "Preview",
+							"appearance": "DEFAULT"
+						}
+					]
+				}
+			],
+			"meta": {
+				"$type": "Meta",
+				"title": "Ecommerce Template",
+				"description": "Ecommerce Template",
+				"image": 3
+			},
+			"slug": "ecommerce-template",
+			"documentStatus": "PUBLISHED"
 		}
 	],
 	"redirects": [],
 	"searchResults": [],
 	"users": [
 		{
-			"$type": "User",
+			"$type": "UserImpl",
 			"id": 1,
 			"name": "Demo Author",
 			"email": "demo-author@janilla.com",
@@ -411,7 +452,7 @@
 			"hash": "c73c5f4d61cf1f9ef10ec1a0eb7b4d49ddd8ad2bf6815b2b3bf0a07dfb795d1e32eb7a89565bb8f844f85d5cb08b400fe8ea925a1b05f6720453d766a1a6941d",
 			"roles": [
 				{
-					"$type": "UserRole",
+					"$type": "UserRoleImpl",
 					"name": "ADMIN"
 				}
 			]

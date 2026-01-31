@@ -30,11 +30,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-public class BackendProperties extends Properties {
+public class CustomProperties extends Properties {
 
 	private static final long serialVersionUID = 1268843931986945970L;
 
-	public BackendProperties(Path file) {
+	public CustomProperties(Path file) {
 		try {
 			try (var x = JanillaBackend.class.getResourceAsStream("configuration.properties")) {
 				load(x);
