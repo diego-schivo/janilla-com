@@ -28,7 +28,7 @@ public class IndexFactory extends WebsiteIndexFactory {
 	@Override
 	protected void putImports(Map<String, String> map) {
 		super.putImports(map);
-		Stream.of("link", "post").map(this::janillaImportKey).forEach(x -> map.put(x, "/" + x + ".js"));
+		Stream.of("header", "link", "post").map(this::janillaImportKey).forEach(x -> map.put(x, "/" + x + ".js"));
 	}
 
 	@Override

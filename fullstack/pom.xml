@@ -74,9 +74,9 @@
 						<configuration>
 							<executable>java</executable>
 							<arguments>
-								<argument>-p</argument>
+								<argument>--module-path</argument>
 								<modulepath/>
-								<argument>-m</argument>
+								<argument>--module</argument>
 								<argument>com.janilla.janillacom.fullstack/com.janilla.janillacom.fullstack.JanillaFullstack</argument>
 							</arguments>
 						</configuration>

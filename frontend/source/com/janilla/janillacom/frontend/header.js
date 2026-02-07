@@ -22,16 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.janillacom.backend;
+import WebsiteHeader from "website/header";
 
-import java.time.Instant;
+export default class Header extends WebsiteHeader {
 
-import com.janilla.backend.cms.Document;
-import com.janilla.backend.cms.DocumentStatus;
-import com.janilla.backend.persistence.Index;
-import com.janilla.backend.persistence.Store;
+    static get moduleUrl() {
+        return import.meta.url;
+    }
 
-@Store
-public record Application(Long id, String title, @Index String slug, Instant createdAt, Instant updatedAt,
-		DocumentStatus documentStatus, Instant publishedAt, String mainClass) implements Document<Long> {
+    static get templateNames() {
+        return ["/website/header"];
+    }
+
+    contentData() {
+		const x = super.contentData();
+		x.navItems.splice(x.navItems.length - 1, 1);
+		return x;
+    }
 }

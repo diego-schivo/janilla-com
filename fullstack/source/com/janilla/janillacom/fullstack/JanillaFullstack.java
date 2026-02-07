@@ -26,7 +26,7 @@ public class JanillaFullstack extends WebsiteFullstack {
 		var f = new DiFactory(Stream
 				.of(BlankFullstack.class.getPackageName(), WebsiteFullstack.class.getPackageName(),
 						JanillaFullstack.class.getPackageName())
-				.flatMap(x -> Java.getPackageClasses(x, true).stream()).toList(), "fullstack");
+				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList(), "fullstack");
 		serve(f, JanillaFullstack.class, args.length > 0 ? args[0] : null);
 	}
 
@@ -58,9 +58,9 @@ public class JanillaFullstack extends WebsiteFullstack {
 //			IO.println("JanillaFullstack.application, a=" + a);
 			if (a != null)
 				try {
-					var c = Class.forName(a.fullstack());
+					var c = Class.forName(a.mainClass());
 					var f = new DiFactory(Stream.of("com.janilla.web", c.getPackageName())
-							.flatMap(x -> Java.getPackageClasses(x, true).stream()).toList(), "fullstack");
+							.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList(), "fullstack");
 					return f.create(c, Java.hashMap("diFactory", f, "configurationFile",
 							Optional.ofNullable(configurationFile).orElseGet(() -> {
 								try {
@@ -81,7 +81,7 @@ public class JanillaFullstack extends WebsiteFullstack {
 	protected List<Class<?>> backendTypes() {
 		return Stream.concat(super.backendTypes().stream(),
 				Stream.of(JanillaBackend.class.getPackageName(), JanillaFullstack.class.getPackageName())
-						.flatMap(x -> Java.getPackageClasses(x, true).stream()))
+						.flatMap(x -> Java.getPackageClasses(x, false).stream()))
 				.toList();
 	}
 
@@ -89,7 +89,7 @@ public class JanillaFullstack extends WebsiteFullstack {
 	protected List<Class<?>> frontendTypes() {
 		return Stream.concat(super.frontendTypes().stream(),
 				Stream.of(JanillaFrontend.class.getPackageName(), JanillaFullstack.class.getPackageName())
-						.flatMap(x -> Java.getPackageClasses(x, true).stream()))
+						.flatMap(x -> Java.getPackageClasses(x, false).stream()))
 				.toList();
 	}
 

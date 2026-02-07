@@ -57,7 +57,7 @@ import Card from "website/card";
 import Content from "website/content";
 import Footer from "website/footer";
 import FormBlock from "website/form-block";
-import Header from "website/header";
+import Header from "header";
 import Hero from "website/hero";
 import JanillaLogo from "janilla-logo";
 import Link from "link";

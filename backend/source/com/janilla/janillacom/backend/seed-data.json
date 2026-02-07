@@ -3,23 +3,58 @@
 		{
 			"$type": "Application",
 			"id": 1,
-			"title": "Blank Template",
-			"slug": "blank-template",
-			"fullstack": "com.janilla.blanktemplate.fullstack.BlankFullstack"
+			"title": "TodoMVC",
+			"slug": "todomvc",
+			"mainClass": "com.janilla.todomvc.TodoMvc"
 		},
 		{
 			"$type": "Application",
 			"id": 2,
-			"title": "Website Template",
-			"slug": "website-template",
-			"fullstack": "com.janilla.websitetemplate.fullstack.WebsiteFullstack"
+			"title": "PetClinic",
+			"slug": "petclinic",
+			"mainClass": "com.janilla.petclinic.PetClinicApplication"
 		},
 		{
 			"$type": "Application",
 			"id": 3,
+			"title": "Acme Dashboard",
+			"slug": "acme-dashboard",
+			"mainClass": "com.janilla.acmedashboard.fullstack.AcmeDashboardFullstack"
+		},
+		{
+			"$type": "Application",
+			"id": 4,
+			"title": "Address Book",
+			"slug": "address-book",
+			"mainClass": "com.janilla.addressbook.fullstack.AddressBookFullstack"
+		},
+		{
+			"$type": "Application",
+			"id": 5,
+			"title": "RealWorld Conduit",
+			"slug": "conduit",
+			"mainClass": "com.janilla.conduit.fullstack.ConduitFullstack"
+		},
+		{
+			"$type": "Application",
+			"id": 6,
+			"title": "Blank Template",
+			"slug": "blank-template",
+			"mainClass": "com.janilla.blanktemplate.fullstack.BlankFullstack"
+		},
+		{
+			"$type": "Application",
+			"id": 7,
+			"title": "Website Template",
+			"slug": "website-template",
+			"mainClass": "com.janilla.websitetemplate.fullstack.WebsiteFullstack"
+		},
+		{
+			"$type": "Application",
+			"id": 8,
 			"title": "Ecommerce Template",
 			"slug": "ecommerce-template",
-			"fullstack": "com.janilla.ecommercetemplate.fullstack.EcommerceFullstack"
+			"mainClass": "com.janilla.ecommercetemplate.fullstack.EcommerceFullstack"
 		}
 	],
 	"categories": [
@@ -73,7 +108,7 @@
 			{
 				"$type": "LinkImpl",
 				"type": "CUSTOM",
-				"uri": "https://github.com/diego-schivo/website-template",
+				"uri": "https://github.com/diego-schivo/janilla",
 				"text": "Source Code"
 			},
 			{
@@ -144,18 +179,8 @@
 			{
 				"$type": "LinkImpl",
 				"type": "CUSTOM",
-				"uri": "/posts",
-				"text": "Posts"
-			},
-			{
-				"$type": "LinkImpl",
-				"type": "REFERENCE",
-				"document": {
-					"$type": "DocumentReference",
-					"type": "Page",
-					"id": 2
-				},
-				"text": "Contact"
+				"uri": "https://github.com/diego-schivo/janilla",
+				"text": "Source Code"
 			}
 		]
 	},
@@ -209,21 +234,14 @@
 			"hero": {
 				"$type": "Hero",
 				"type": "HIGH_IMPACT",
-				"richText": "<h1>The vanilla foundation to build the modern web</h1><p>Janilla leverages standard technologies and principles to let you develop overengineering-free equivalent of web applications relying on heavy frameworks.</p>",
+				"richText": "<h1>The vanilla foundation to build the lightweight web</h1><p>Janilla leverages standard technologies and principles to let you develop overengineering-free equivalent of web applications relying on heavy frameworks.</p>",
 				"links": [
 					{
 						"$type": "LinkImpl",
 						"type": "CUSTOM",
-						"uri": "/posts",
-						"text": "All posts",
+						"uri": "https://github.com/diego-schivo/janilla",
+						"text": "Source Code",
 						"appearance": "DEFAULT"
-					},
-					{
-						"$type": "LinkImpl",
-						"type": "CUSTOM",
-						"uri": "/contact",
-						"text": "Contact",
-						"appearance": "OUTLINE"
 					}
 				],
 				"media": 4
@@ -234,69 +252,77 @@
 					"columns": [
 						{
 							"$type": "Column",
-							"size": "FULL",
-							"richText": "<h2>Vanilla Packages</h2><p>Just plain standard source code, organized into a flat hierarchy of small files.</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is a set of three libraries that implement an overengineering-free stack of web technologies.</div><div>- Base: provides IoC factory, JSON parser and formatter, web server and client, MVC factory.</div><div>- Backend: provides database, data persistence, CMS API, email sending.</div><div>- Frontend: provides templating engine, CMS administration panel.</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>CMS</h3><p>Models content as documents and files. Provides API endpoints to read and write content. Generates the Admin Panel. Supports versions and drafts.<br />(Source: <a href=\"#\">backend</a>, <a href=\"#\">frontend</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is a self-contained solution.</div><div>- The base module has no dependencies (implicitly requires only the Java base module).</div><div>- The backend and frontend modules are independent of each other and require only the Janilla base module.</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>Frontend</h3><p>Simplifies web component development by replacing manual DOM manipulation with declarative HTML template interpolation.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla does not use any external systems other than the operating system.</div><div>The database and server are also embedded.</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>HTTP</h3><p>Provides HTTP/1.1 and HTTP/2 client and server.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is not necessary a framework.</div><div>All library classes can work without IoC.</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>IoC</h3><p>Provides a factory with Dependency Injection capability.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is a project written in the vanilla style of standard languages.</div><div>- Server-side: Java (Java SE 25 LTS).</div><div>- Client-side: JavaScript (ES6), HTML (HTML5), CSS (CSS3).</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>Java</h3><p>Allows dynamic inspection and manipulation of arbitrary objects. Handles advanced type conversion. Provides other utilities such as scanning Java classpath and modules.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is a compact solution.</div><div>- 3 modules.</div><div>- 12 packages.</div><div>- 90 Java classes, 33 JavaScript classes.</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>JSON</h3><p>Formats Java objects as JSON strings. Parses JSON input. Also provides utilities for JWT.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla provides everything you need to develop overengineering-free web applications.</div><div>- IoC factory: takes care of correctly building complex objects by retrieving the appropriate dependencies (DI).</div><div>- JSON parser and formatter: builds Java objects from JSON input and vice versa.</div><div>- Web server: accepts secure connections (TLS) from browser and converts between HTTP/2 streams and request/response objects.</div><div>- MVC factory: dispatches requests to handlers that implement the business logic and return responses, typically JSON (backend) or HTML/JS/CSS (frontend).</div><div>- Database: performs read and write operations on tables and indexes saved in a SQLite file.</div><div>- Data persistence: builds the database based on the entities that define the data model and takes care of saving and retrieving objects (CRUD).</div><div>- CMS API: extends data persistence by defining documents as entities with additional features (metadata/versions/drafts) and exposes access to them via REST API.</div><div>- Email sending: provides an SMTP client.</div><div>- Templating engine: implements JavaScript object rendering without direct DOM manipulation, using standard Web Components technologies.</div><div>- CMS administration panel: allows editors to manage application content through a web interface dynamically built from the data model.</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>Net</h3><p>Extends Java NIO to support SSL transfers. Provides a base secure server.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is continuously improved by rewriting increasingly complex open-source applications originally developed by others.</div><div>- TodoMVC: with the templating engine, the UI can be easily created by leveraging only the power of JavaScript and HTML rather than resorting to more cumbersome alternative techniques.</div><div>- PetClinic: data persistence allows you to ignore the database and focus on the business model and logic, while SSR is achieved by combining POJOs, Java annotations and standard HTML.</div><div>- Address Book: a simple CRUD application that can run either as two separate processes (a frontend that calls the APIs exposed by the backend) or as a single fullstack process (convenient for development).</div><div>- Acme Dashboard: features JWT authentication and implements additional CRUD features such as search and pagination.</div><div>- RealWorld Conduit: features social features such as registration, comments, favorites and followers.</div><div>- Blank Template: the application integrates with the CMS and its admin panel, with users and media modeled as document collections.</div><div>- Website Template: the CMS maintains editorial content (pages, posts, images, categories) and non-editorial content (contact forms and requests, redirect rules, search results).</div><div>- Ecommerce Template: the CMS also maintains the catalog (products and variants) and additional user data related to their profile (addresses) and purchases (carts, orders, transactions).</div>"
 						},
 						{
 							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>Persistence</h3><p>Models data as entities. Defines annotations for stores and indexes. Provides a base for CRUD operations.<br />(<a href=\"#\">Source</a>)</p>"
-						},
-						{
-							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>SMTP</h3><p>Sends emails.<br />(<a href=\"#\">Source</a>)</p>"
-						},
-						{
-							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>SQLite</h3><p>Reads and writes data into tables and indexes stored as B-Trees in a file, using SQLite format.<br />(<a href=\"#\">Source</a>)</p>"
-						},
-						{
-							"$type": "Column",
-							"size": "ONE_THIRD",
-							"richText": "<h3>Web</h3><p>Serves static files or dynamically invokes Java methods in HTTP exchanges. Handles request data binding and result rendering in response.<br />(<a href=\"#\">Source</a>)</p>"
+							"size": {
+								"$type": "ColumnSize",
+								"name": "FULL"
+							},
+							"richText": "<div>Janilla is free software.</div><div>- The library license is the same as the OpenJDK implementation of Java SE.</div><div>- The reimplemented applications retained the same license as the corresponding original ones.</div>"
 						}
 					]
-				},
-				{
-					"$type": "Archive",
-					"introContent": "<h3>Recent posts</h3>"
 				}
 			],
 			"meta": {
@@ -340,7 +366,7 @@
 		{
 			"$type": "PostImpl",
 			"id": 1,
-			"title": "Blank Template",
+			"title": "TodoMVC",
 			"heroImage": 1,
 			"content": [
 				{
@@ -364,17 +390,17 @@
 			],
 			"meta": {
 				"$type": "Meta",
-				"title": "Blank Template",
-				"description": "Blank Template",
+				"title": "TodoMVC",
+				"description": "TodoMVC",
 				"image": 1
 			},
-			"slug": "blank-template",
+			"slug": "todomvc",
 			"documentStatus": "PUBLISHED"
 		},
 		{
 			"$type": "PostImpl",
 			"id": 2,
-			"title": "Website Template",
+			"title": "PetClinic",
 			"heroImage": 2,
 			"content": [
 				{
@@ -398,17 +424,17 @@
 			],
 			"meta": {
 				"$type": "Meta",
-				"title": "Website Template",
-				"description": "Website Template",
+				"title": "PetClinic",
+				"description": "PetClinic",
 				"image": 2
 			},
-			"slug": "website-template",
+			"slug": "petclinic",
 			"documentStatus": "PUBLISHED"
 		},
 		{
 			"$type": "PostImpl",
 			"id": 3,
-			"title": "Ecommerce Template",
+			"title": "Acme Dashboard",
 			"heroImage": 3,
 			"content": [
 				{
@@ -432,9 +458,179 @@
 			],
 			"meta": {
 				"$type": "Meta",
+				"title": "Acme Dashboard",
+				"description": "Acme Dashboard",
+				"image": 3
+			},
+			"slug": "acme-dashboard",
+			"documentStatus": "PUBLISHED"
+		},
+		{
+			"$type": "PostImpl",
+			"id": 4,
+			"title": "Address Book",
+			"heroImage": 1,
+			"content": [
+				{
+					"$type": "CallToAction",
+					"richText": "<p>Preview</p>",
+					"links": [
+						{
+							"$type": "LinkImpl",
+							"type": "REFERENCE",
+							"newTab": true,
+							"document": {
+								"$type": "DocumentReference",
+								"type": "Application",
+								"id": 4
+							},
+							"text": "Preview",
+							"appearance": "DEFAULT"
+						}
+					]
+				}
+			],
+			"meta": {
+				"$type": "Meta",
+				"title": "Address Book",
+				"description": "Address Book",
+				"image": 1
+			},
+			"slug": "address-book",
+			"documentStatus": "PUBLISHED"
+		},
+		{
+			"$type": "PostImpl",
+			"id": 5,
+			"title": "RealWorld Conduit",
+			"heroImage": 2,
+			"content": [
+				{
+					"$type": "CallToAction",
+					"richText": "<p>Preview</p>",
+					"links": [
+						{
+							"$type": "LinkImpl",
+							"type": "REFERENCE",
+							"newTab": true,
+							"document": {
+								"$type": "DocumentReference",
+								"type": "Application",
+								"id": 5
+							},
+							"text": "Preview",
+							"appearance": "DEFAULT"
+						}
+					]
+				}
+			],
+			"meta": {
+				"$type": "Meta",
+				"title": "RealWorld Conduit",
+				"description": "RealWorld Conduit",
+				"image": 2
+			},
+			"slug": "conduit",
+			"documentStatus": "PUBLISHED"
+		},
+		{
+			"$type": "PostImpl",
+			"id": 6,
+			"title": "Blank Template",
+			"heroImage": 3,
+			"content": [
+				{
+					"$type": "CallToAction",
+					"richText": "<p>Preview</p>",
+					"links": [
+						{
+							"$type": "LinkImpl",
+							"type": "REFERENCE",
+							"newTab": true,
+							"document": {
+								"$type": "DocumentReference",
+								"type": "Application",
+								"id": 6
+							},
+							"text": "Preview",
+							"appearance": "DEFAULT"
+						}
+					]
+				}
+			],
+			"meta": {
+				"$type": "Meta",
+				"title": "Blank Template",
+				"description": "Blank Template",
+				"image": 3
+			},
+			"slug": "blank-template",
+			"documentStatus": "PUBLISHED"
+		},
+		{
+			"$type": "PostImpl",
+			"id": 2,
+			"title": "Website Template",
+			"heroImage": 1,
+			"content": [
+				{
+					"$type": "CallToAction",
+					"richText": "<p>Preview</p>",
+					"links": [
+						{
+							"$type": "LinkImpl",
+							"type": "REFERENCE",
+							"newTab": true,
+							"document": {
+								"$type": "DocumentReference",
+								"type": "Application",
+								"id": 7
+							},
+							"text": "Preview",
+							"appearance": "DEFAULT"
+						}
+					]
+				}
+			],
+			"meta": {
+				"$type": "Meta",
+				"title": "Website Template",
+				"description": "Website Template",
+				"image": 1
+			},
+			"slug": "website-template",
+			"documentStatus": "PUBLISHED"
+		},
+		{
+			"$type": "PostImpl",
+			"id": 3,
+			"title": "Ecommerce Template",
+			"heroImage": 2,
+			"content": [
+				{
+					"$type": "CallToAction",
+					"richText": "<p>Preview</p>",
+					"links": [
+						{
+							"$type": "LinkImpl",
+							"type": "REFERENCE",
+							"newTab": true,
+							"document": {
+								"$type": "DocumentReference",
+								"type": "Application",
+								"id": 8
+							},
+							"text": "Preview",
+							"appearance": "DEFAULT"
+						}
+					]
+				}
+			],
+			"meta": {
+				"$type": "Meta",
 				"title": "Ecommerce Template",
 				"description": "Ecommerce Template",
-				"image": 3
+				"image": 2
 			},
 			"slug": "ecommerce-template",
 			"documentStatus": "PUBLISHED"
