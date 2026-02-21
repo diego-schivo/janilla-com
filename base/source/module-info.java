@@ -22,16 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.janillacom.backend;
+module com.janilla.janillacom.base {
 
-import java.time.Instant;
+	exports com.janilla.janillacom.base;
 
-import com.janilla.backend.cms.Document;
-import com.janilla.backend.cms.DocumentStatus;
-import com.janilla.backend.persistence.Index;
-import com.janilla.backend.persistence.Store;
+	opens com.janilla.janillacom.base;
 
-@Store
-public record Application(Long id, String title, @Index String slug, Instant createdAt, Instant updatedAt,
-		DocumentStatus documentStatus, Instant publishedAt, String mainClass) implements Document<Long> {
+	requires transitive com.janilla.base;
 }

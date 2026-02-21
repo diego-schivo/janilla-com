@@ -22,18 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.janillacom.frontend {
+package com.janilla.janillacom.backend;
 
-	exports com.janilla.janillacom.frontend;
+import java.net.SocketAddress;
+import java.util.Map;
 
-	opens com.janilla.janillacom.frontend;
+import javax.net.ssl.SSLContext;
 
-	requires transitive com.janilla.ecommercetemplate.frontend;
-	requires transitive com.janilla.janillacom.base;
+import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpHandler;
+import com.janilla.http.HttpRequest;
+import com.janilla.http.HttpResponse;
+import com.janilla.http.HttpServer;
+import com.janilla.ioc.DiFactory;
+import com.janilla.java.Reflection;
 
-	requires com.janilla.acmedashboard.frontend;
-	requires com.janilla.addressbook.frontend;
-	requires com.janilla.conduit.frontend;
-	requires com.janilla.petclinic.frontend;
-	requires com.janilla.todomvc.frontend;
+public class CustomHttpServer extends HttpServer {
+
+	protected final JanillaBackend application;
+
+	public CustomHttpServer(SSLContext sslContext, SocketAddress endpoint, HttpHandler handler,
+			JanillaBackend application) {
+		super(sslContext, endpoint, handler);
+		this.application = application;
+	}
+
+	@Override
+	protected HttpExchange createExchange(HttpRequest request, HttpResponse response) {
+		var a = application.application(request.getAuthority());
+//		IO.println("CustomHttpServer.createExchange, a=" + a);
+		var f = (DiFactory) Reflection.property(a.getClass(), "diFactory").get(a);
+		var e = f.create(f.actualType(HttpExchange.class), Map.of("request", request, "response", response));
+		return e != null ? e : super.createExchange(request, response);
+	}
 }

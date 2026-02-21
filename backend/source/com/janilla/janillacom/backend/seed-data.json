@@ -5,96 +5,66 @@
 			"id": 1,
 			"title": "TodoMVC",
 			"slug": "todomvc",
-			"mainClass": "com.janilla.todomvc.TodoMvc"
+			"frontend": "com.janilla.todomvc.frontend.TodoMvcFrontend"
 		},
 		{
 			"$type": "Application",
 			"id": 2,
 			"title": "PetClinic",
 			"slug": "petclinic",
-			"mainClass": "com.janilla.petclinic.PetClinicApplication"
+			"frontend": "com.janilla.petclinic.frontend.PetclinicFrontend",
+			"backend": "com.janilla.petclinic.backend.PetclinicBackend"
 		},
 		{
 			"$type": "Application",
 			"id": 3,
-			"title": "Acme Dashboard",
-			"slug": "acme-dashboard",
-			"mainClass": "com.janilla.acmedashboard.fullstack.AcmeDashboardFullstack"
+			"title": "Address Book",
+			"slug": "addressbook",
+			"frontend": "com.janilla.addressbook.frontend.AddressBookFrontend",
+			"backend": "com.janilla.addressbook.backend.AddressBookBackend"
 		},
 		{
 			"$type": "Application",
 			"id": 4,
-			"title": "Address Book",
-			"slug": "address-book",
-			"mainClass": "com.janilla.addressbook.fullstack.AddressBookFullstack"
+			"title": "Acme Dashboard",
+			"slug": "acmedashboard",
+			"frontend": "com.janilla.acmedashboard.frontend.AcmeDashboardFrontend",
+			"backend": "com.janilla.acmedashboard.backend.AcmeDashboardBackend"
 		},
 		{
 			"$type": "Application",
 			"id": 5,
 			"title": "RealWorld Conduit",
 			"slug": "conduit",
-			"mainClass": "com.janilla.conduit.fullstack.ConduitFullstack"
+			"frontend": "com.janilla.conduit.frontend.ConduitFrontend",
+			"backend": "com.janilla.conduit.backend.ConduitBackend"
 		},
 		{
 			"$type": "Application",
 			"id": 6,
 			"title": "Blank Template",
-			"slug": "blank-template",
-			"mainClass": "com.janilla.blanktemplate.fullstack.BlankFullstack"
+			"slug": "blanktemplate",
+			"frontend": "com.janilla.blanktemplate.frontend.BlankFrontend",
+			"backend": "com.janilla.blanktemplate.backend.BlankBackend"
 		},
 		{
 			"$type": "Application",
 			"id": 7,
 			"title": "Website Template",
-			"slug": "website-template",
-			"mainClass": "com.janilla.websitetemplate.fullstack.WebsiteFullstack"
+			"slug": "websitetemplate",
+			"frontend": "com.janilla.websitetemplate.frontend.WebsiteFrontend",
+			"backend": "com.janilla.websitetemplate.backend.WebsiteBackend"
 		},
 		{
 			"$type": "Application",
 			"id": 8,
 			"title": "Ecommerce Template",
-			"slug": "ecommerce-template",
-			"mainClass": "com.janilla.ecommercetemplate.fullstack.EcommerceFullstack"
+			"slug": "ecommercetemplate",
+			"frontend": "com.janilla.ecommercetemplate.frontend.EcommerceFrontend",
+			"backend": "com.janilla.ecommercetemplate.backend.EcommerceBackend"
 		}
 	],
-	"categories": [
-		{
-			"$type": "Category",
-			"id": 1,
-			"title": "Technology",
-			"slug": "technology"
-		},
-		{
-			"$type": "Category",
-			"id": 2,
-			"title": "News",
-			"slug": "news"
-		},
-		{
-			"$type": "Category",
-			"id": 3,
-			"title": "Finance",
-			"slug": "finance"
-		},
-		{
-			"$type": "Category",
-			"id": 4,
-			"title": "Design",
-			"slug": "design"
-		},
-		{
-			"$type": "Category",
-			"id": 5,
-			"title": "Software",
-			"slug": "software"
-		},
-		{
-			"$type": "Category",
-			"id": 6,
-			"title": "Engineering",
-			"slug": "engineering"
-		}
-	],
+	"categories": [],
 	"footer": {
 		"$type": "Footer",
 		"id": 1,
@@ -120,58 +90,7 @@
 		]
 	},
 	"formSubmissions": [],
-	"forms": [
-		{
-			"$type": "Form",
-			"id": 1,
-			"title": "Contact Form",
-			"fields": [
-				{
-					"$type": "TextField",
-					"name": "full-name",
-					"label": "Full Name",
-					"width": 100,
-					"required": true
-				},
-				{
-					"$type": "EmailField",
-					"name": "email",
-					"label": "Email",
-					"width": 100,
-					"required": true
-				},
-				{
-					"$type": "NumberField",
-					"name": "phone",
-					"label": "Phone",
-					"width": 100,
-					"required": false
-				},
-				{
-					"$type": "TextAreaField",
-					"name": "message",
-					"label": "Message",
-					"width": 100,
-					"required": true
-				}
-			],
-			"submitButtonLabel": "Submit",
-			"confirmationType": "MESSAGE",
-			"confirmationMessage": "<h2>The contact form has been submitted successfully.</h2>",
-			"emails": [
-				{
-					"$type": "Email",
-					"emailTo": "${email}",
-					"cc": "",
-					"bcc": "",
-					"replyTo": "",
-					"emailFrom": "\"Janilla\" <diego.schivo@janilla.com>",
-					"subject": "You've received a new message.",
-					"message": "Your contact form submission was successfully received."
-				}
-			]
-		}
-	],
+	"forms": [],
 	"header": {
 		"$type": "Header",
 		"id": 1,
@@ -188,36 +107,6 @@
 		{
 			"$type": "Media",
 			"id": 1,
-			"file": {
-				"$type": "File",
-				"name": "image-post1.webp"
-			},
-			"alt": "Curving abstract shapes with an orange and blue gradient",
-			"caption": "<p>Photo by <a href=\"https://unsplash.com/@kirp\" rel=\"noopener noreferrer\" target=\"_blank\">Andrew Kliatskyi</a> on Unsplash.</p>"
-		},
-		{
-			"$type": "Media",
-			"id": 2,
-			"file": {
-				"$type": "File",
-				"name": "image-post2.webp"
-			},
-			"alt": "Curving abstract shapes with an orange and blue gradient",
-			"caption": "<p>Photo by <a href=\"https://unsplash.com/@kirp\" rel=\"noopener noreferrer\" target=\"_blank\">Andrew Kliatskyi</a> on Unsplash.</p>"
-		},
-		{
-			"$type": "Media",
-			"id": 3,
-			"file": {
-				"$type": "File",
-				"name": "image-post3.webp"
-			},
-			"alt": "Curving abstract shapes with an orange and blue gradient",
-			"caption": "<p>Photo by <a href=\"https://unsplash.com/@kirp\" rel=\"noopener noreferrer\" target=\"_blank\">Andrew Kliatskyi</a> on Unsplash.</p>"
-		},
-		{
-			"$type": "Media",
-			"id": 4,
 			"file": {
 				"$type": "File",
 				"name": "image-hero1.webp"
@@ -244,7 +133,7 @@
 						"appearance": "DEFAULT"
 					}
 				],
-				"media": 4
+				"media": 1
 			},
 			"layout": [
 				{
@@ -256,7 +145,7 @@
 								"$type": "ColumnSize",
 								"name": "FULL"
 							},
-							"richText": "<div>Janilla is a set of three libraries that implement an overengineering-free stack of web technologies.</div><div>- Base: provides IoC factory, JSON parser and formatter, web server and client, MVC factory.</div><div>- Backend: provides database, data persistence, CMS API, email sending.</div><div>- Frontend: provides templating engine, CMS administration panel.</div>"
+							"richText": "<div>Janilla is a set of three small libraries that implement an overengineering-free stack of web technologies.</div><div>- Base: provides IoC factory, JSON parser and formatter, web client and server, MVC factory.</div><div>- Backend: provides database, data persistence, CMS API, email sending.</div><div>- Frontend: provides templating engine, CMS administration panel.</div>"
 						},
 						{
 							"$type": "Column",
@@ -336,306 +225,9 @@
 				"$type": "Document.Status",
 				"name": "PUBLISHED"
 			}
-		},
-		{
-			"$type": "Page",
-			"id": 2,
-			"title": "Contact",
-			"hero": {
-				"$type": "Hero",
-				"type": "NONE",
-				"richText": "",
-				"links": []
-			},
-			"layout": [
-				{
-					"$type": "FormBlock",
-					"form": 1,
-					"introContent": "<h3>Example contact form:</h3>",
-					"enableIntro": "true"
-				}
-			],
-			"slug": "contact",
-			"documentStatus": {
-				"$type": "Document.Status",
-				"name": "PUBLISHED"
-			}
 		}
 	],
-	"posts": [
-		{
-			"$type": "PostImpl",
-			"id": 1,
-			"title": "TodoMVC",
-			"heroImage": 1,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 1
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "TodoMVC",
-				"description": "TodoMVC",
-				"image": 1
-			},
-			"slug": "todomvc",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 2,
-			"title": "PetClinic",
-			"heroImage": 2,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 2
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "PetClinic",
-				"description": "PetClinic",
-				"image": 2
-			},
-			"slug": "petclinic",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 3,
-			"title": "Acme Dashboard",
-			"heroImage": 3,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 3
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "Acme Dashboard",
-				"description": "Acme Dashboard",
-				"image": 3
-			},
-			"slug": "acme-dashboard",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 4,
-			"title": "Address Book",
-			"heroImage": 1,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 4
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "Address Book",
-				"description": "Address Book",
-				"image": 1
-			},
-			"slug": "address-book",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 5,
-			"title": "RealWorld Conduit",
-			"heroImage": 2,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 5
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "RealWorld Conduit",
-				"description": "RealWorld Conduit",
-				"image": 2
-			},
-			"slug": "conduit",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 6,
-			"title": "Blank Template",
-			"heroImage": 3,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 6
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "Blank Template",
-				"description": "Blank Template",
-				"image": 3
-			},
-			"slug": "blank-template",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 2,
-			"title": "Website Template",
-			"heroImage": 1,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 7
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "Website Template",
-				"description": "Website Template",
-				"image": 1
-			},
-			"slug": "website-template",
-			"documentStatus": "PUBLISHED"
-		},
-		{
-			"$type": "PostImpl",
-			"id": 3,
-			"title": "Ecommerce Template",
-			"heroImage": 2,
-			"content": [
-				{
-					"$type": "CallToAction",
-					"richText": "<p>Preview</p>",
-					"links": [
-						{
-							"$type": "LinkImpl",
-							"type": "REFERENCE",
-							"newTab": true,
-							"document": {
-								"$type": "DocumentReference",
-								"type": "Application",
-								"id": 8
-							},
-							"text": "Preview",
-							"appearance": "DEFAULT"
-						}
-					]
-				}
-			],
-			"meta": {
-				"$type": "Meta",
-				"title": "Ecommerce Template",
-				"description": "Ecommerce Template",
-				"image": 2
-			},
-			"slug": "ecommerce-template",
-			"documentStatus": "PUBLISHED"
-		}
-	],
+	"posts": [],
 	"redirects": [],
 	"searchResults": [],
 	"users": [

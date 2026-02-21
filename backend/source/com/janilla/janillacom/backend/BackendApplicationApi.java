@@ -24,17 +24,26 @@
  */
 package com.janilla.janillacom.backend;
 
+import java.util.List;
 import java.util.function.Predicate;
 
-import com.janilla.backend.cms.CollectionApi;
+import com.janilla.backend.cms.AbstractCollectionApi;
 import com.janilla.backend.persistence.Persistence;
 import com.janilla.http.HttpExchange;
+import com.janilla.janillacom.base.Application;
+import com.janilla.janillacom.base.ApplicationApi;
 import com.janilla.web.Handle;
 
 @Handle(path = "/api/applications")
-public class ApplicationApi extends CollectionApi<Long, Application> {
+public class BackendApplicationApi extends AbstractCollectionApi<Long, Application> implements ApplicationApi {
 
-	public ApplicationApi(Predicate<HttpExchange> drafts, Persistence persistence) {
+	public BackendApplicationApi(Predicate<HttpExchange> drafts, Persistence persistence) {
 		super(Application.class, drafts, persistence);
+	}
+
+	@Override
+	@Handle(method = "GET")
+	public List<Application> read(String slug, Long skip, Long limit) {
+		return slug != null ? crud().read(crud().filter("slug", new Object[] { slug })) : read(skip, limit);
 	}
 }

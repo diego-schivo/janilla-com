@@ -22,18 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.janillacom.frontend {
+package com.janilla.janillacom.base;
 
-	exports com.janilla.janillacom.frontend;
+import java.time.Instant;
 
-	opens com.janilla.janillacom.frontend;
+import com.janilla.cms.Document;
+import com.janilla.cms.DocumentStatus;
+import com.janilla.persistence.Index;
+import com.janilla.persistence.Store;
 
-	requires transitive com.janilla.ecommercetemplate.frontend;
-	requires transitive com.janilla.janillacom.base;
-
-	requires com.janilla.acmedashboard.frontend;
-	requires com.janilla.addressbook.frontend;
-	requires com.janilla.conduit.frontend;
-	requires com.janilla.petclinic.frontend;
-	requires com.janilla.todomvc.frontend;
+@Store
+public record Application(Long id, String title, @Index String slug, String frontend, String backend, Instant createdAt,
+		Instant updatedAt, DocumentStatus documentStatus, Instant publishedAt) implements Document<Long> {
 }

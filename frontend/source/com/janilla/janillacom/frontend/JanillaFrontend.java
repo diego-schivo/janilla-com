@@ -1,45 +1,92 @@
 package com.janilla.janillacom.frontend;
 
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import com.janilla.blanktemplate.frontend.BlankFrontend;
+import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DiFactory;
+import com.janilla.janillacom.base.ApplicationApi;
 import com.janilla.java.Java;
+import com.janilla.java.Reflection;
 import com.janilla.websitetemplate.frontend.WebsiteFrontend;
 
 public class JanillaFrontend extends WebsiteFrontend {
 
+	public static final String[] DI_PACKAGES = Stream
+			.concat(Arrays.stream(WebsiteFrontend.DI_PACKAGES), Stream.of("com.janilla.janillacom.frontend"))
+			.toArray(String[]::new);
+
 	public static void main(String[] args) {
 		IO.println(ProcessHandle.current().pid());
-		var f = new DiFactory(Stream
-				.of("com.janilla.web", BlankFrontend.class.getPackageName(), WebsiteFrontend.class.getPackageName(),
-						JanillaFrontend.class.getPackageName())
-				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
+		var f = new DiFactory(
+				Arrays.stream(DI_PACKAGES).flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 		serve(f, JanillaFrontend.class, args.length > 0 ? args[0] : null);
 	}
 
+	protected final ApplicationApi applicationApi;
+
+	protected final Map<String, Object> applications = new ConcurrentHashMap<>();
+
 	public JanillaFrontend(DiFactory diFactory, Path configurationFile) {
-		this(diFactory, configurationFile, "janilla-com");
+		super(diFactory, configurationFile, "janilla-com");
+
+		applicationApi = diFactory.create(diFactory.actualType(ApplicationApi.class));
 	}
 
-	public JanillaFrontend(DiFactory diFactory, Path configurationFile, String configurationKey) {
-		super(diFactory, configurationFile, configurationKey);
+	public JanillaFrontend application() {
+		return this;
+	}
+
+	public Object application(String authority) {
+//		IO.println("JanillaFrontend.application, authority=" + authority);
+		var s = "." + configuration.getProperty(configurationKey + ".authority");
+		if (!authority.endsWith(s))
+			return this;
+		return applications.computeIfAbsent(authority.substring(0, authority.length() - s.length()), k -> {
+//			IO.println("JanillaFrontend.application, k=" + k);
+			var a = applicationApi.read(k, null, null).getFirst();
+//			IO.println("JanillaFrontend.application, a=" + a);
+			if (a != null)
+				try {
+					var c = Class.forName(a.frontend());
+					var f = new DiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
+							.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
+					var cf = configurationFile != null ? configurationFile
+							: Path.of(JanillaFrontend.class.getResource("configuration.properties").toURI());
+					return f.create(c, Java.hashMap("diFactory", f, "configurationFile", cf));
+				} catch (ReflectiveOperationException | URISyntaxException e) {
+					throw new RuntimeException(e);
+				}
+			return this;
+		});
+	}
+
+	@Override
+	protected boolean handle(HttpExchange exchange) {
+//		IO.println("JanillaFrontend.handle, exchange=" + exchange);
+		var a = application(exchange.request().getAuthority());
+		return a == this ? super.handle(exchange)
+				: ((HttpHandler) Reflection.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}
 
 	@Override
 	protected Map<String, List<Path>> resourcePaths() {
-		var pp1 = Java.getPackagePaths("com.janilla.frontend.cms", false).filter(Files::isRegularFile).toList();
-		var pp2 = Java.getPackagePaths(BlankFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+		var pp1 = Java.getPackagePaths("com.janilla.frontend", false).filter(Files::isRegularFile).toList();
+		var pp2 = Java.getPackagePaths("com.janilla.frontend.cms", false).filter(Files::isRegularFile).toList();
+		var pp3 = Java.getPackagePaths(BlankFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
 				.toList();
-		var pp3 = Java.getPackagePaths(WebsiteFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+		var pp4 = Java.getPackagePaths(WebsiteFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
 				.toList();
-		var pp4 = Stream
-				.of("com.janilla.frontend", "com.janilla.frontend.resources", JanillaFrontend.class.getPackageName())
-				.flatMap(x -> Java.getPackagePaths(x, false).filter(Files::isRegularFile)).toList();
-		return Map.of("/cms", pp1, "/blank", pp2, "/website", pp3, "", pp4);
+		var pp5 = Java.getPackagePaths(JanillaFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+				.toList();
+		return Map.of("/base", pp1, "/cms", pp2, "/blank", pp3, "/website", pp4, "", pp5);
 	}
 }

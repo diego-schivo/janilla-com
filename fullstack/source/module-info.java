@@ -32,11 +32,11 @@ module com.janilla.janillacom.fullstack {
 	requires transitive com.janilla.janillacom.frontend;
 	requires transitive com.janilla.websitetemplate.fullstack;
 
-	requires com.janilla.acmedashboard.fullstack;
-	requires com.janilla.addressbook.fullstack;
+//	requires com.janilla.acmedashboard.fullstack;
+//	requires com.janilla.addressbook.fullstack;
 //	requires com.janilla.blanktemplate.fullstack;
-	requires com.janilla.conduit.fullstack;
-	requires com.janilla.ecommercetemplate.fullstack;
-	requires com.janilla.petclinic;
-	requires com.janilla.todomvc;
+//	requires com.janilla.conduit.fullstack;
+//	requires com.janilla.ecommercetemplate.fullstack;
+//	requires com.janilla.petclinic.fullstack;
+//	requires com.janilla.todomvc;
 }

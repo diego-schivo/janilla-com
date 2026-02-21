@@ -1,34 +1,81 @@
 package com.janilla.janillacom.backend;
 
+import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import com.janilla.blanktemplate.backend.BlankBackend;
+import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DiFactory;
+import com.janilla.janillacom.base.Application;
 import com.janilla.java.Java;
+import com.janilla.java.Reflection;
 import com.janilla.websitetemplate.backend.WebsiteBackend;
 
 public class JanillaBackend extends WebsiteBackend {
 
+	public static final String[] DI_PACKAGES = Stream.concat(Arrays.stream(WebsiteBackend.DI_PACKAGES),
+			Stream.of("com.janilla.janillacom.base", "com.janilla.janillacom.backend")).toArray(String[]::new);
+
 	public static void main(String[] args) {
 		IO.println(ProcessHandle.current().pid());
-		var f = new DiFactory(Stream
-				.of("com.janilla.web", BlankBackend.class.getPackageName(), WebsiteBackend.class.getPackageName(),
-						JanillaBackend.class.getPackageName())
-				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
+		var f = new DiFactory(
+				Arrays.stream(DI_PACKAGES).flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 		serve(f, JanillaBackend.class, args.length > 0 ? args[0] : null);
 	}
 
+	protected final Map<String, Object> applications = new ConcurrentHashMap<>();
+
 	public JanillaBackend(DiFactory diFactory, Path configurationFile) {
-		this(diFactory, configurationFile, "janilla-com");
+		super(diFactory, configurationFile, "janilla-com");
 	}
 
-	public JanillaBackend(DiFactory diFactory, Path configurationFile, String configurationKey) {
-		super(diFactory, configurationFile, configurationKey);
+	public JanillaBackend application() {
+		return this;
+	}
+
+	public Object application(String authority) {
+//		IO.println("JanillaBackend.application, authority=" + authority);
+		var s = "." + configuration.getProperty(configurationKey + ".authority");
+//		IO.println("JanillaBackend.application, s=" + s);
+		if (!authority.endsWith(s))
+			return this;
+		return applications.computeIfAbsent(authority.substring(0, authority.length() - s.length()), k -> {
+//			IO.println("JanillaBackend.application, k=" + k);
+			Application a;
+			{
+				var c = persistence.crud(Application.class);
+				a = c.read(c.find("slug", k));
+			}
+//			IO.println("JanillaBackend.application, a=" + a);
+			if (a != null)
+				try {
+					var c = Class.forName(a.backend());
+					var f = new DiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
+							.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
+					var cf = configurationFile != null ? configurationFile
+							: Path.of(JanillaBackend.class.getResource("configuration.properties").toURI());
+					return f.create(c, Java.hashMap("diFactory", f, "configurationFile", cf));
+				} catch (ReflectiveOperationException | URISyntaxException e) {
+					throw new RuntimeException(e);
+				}
+			return this;
+		});
 	}
 
 	@Override
 	protected Class<?> dataClass() {
 		return Data.class;
+	}
+
+	@Override
+	protected boolean handle(HttpExchange exchange) {
+//		IO.println("JanillaBackend.handle, exchange=" + exchange);
+		var a = application(exchange.request().getAuthority());
+		return a == this ? super.handle(exchange)
+				: ((HttpHandler) Reflection.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}
 }

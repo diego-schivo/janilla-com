@@ -24,12 +24,22 @@
  */
 package com.janilla.janillacom.fullstack;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.SocketAddress;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.net.ssl.SSLContext;
 
+import com.janilla.http.Frame;
+import com.janilla.http.FrameTransfer;
+import com.janilla.http.HeadersFrame;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
 import com.janilla.http.HttpRequest;
@@ -37,35 +47,67 @@ import com.janilla.http.HttpResponse;
 import com.janilla.http.HttpServer;
 import com.janilla.ioc.Context;
 import com.janilla.ioc.DiFactory;
+import com.janilla.janillacom.backend.JanillaBackend;
+import com.janilla.janillacom.frontend.JanillaFrontend;
 import com.janilla.java.Reflection;
 
 @Context("fullstack")
 public class CustomHttpServer extends HttpServer {
 
-	protected final JanillaFullstack application;
+	protected final JanillaBackend backend;
 
-	public CustomHttpServer(SSLContext sslContext, SocketAddress endpoint, HttpHandler handler,
-			JanillaFullstack application) {
+	protected final JanillaFrontend frontend;
+
+	public CustomHttpServer(SSLContext sslContext, SocketAddress endpoint, HttpHandler handler, JanillaBackend backend,
+			JanillaFrontend frontend) {
 		super(sslContext, endpoint, handler);
-		this.application = application;
+		this.backend = backend;
+		this.frontend = frontend;
+	}
+
+	@Override
+	protected void handleEndHeaders1(List<String> lines) {
+		var dt = LocalDateTime.now();
+
+		SocketAddress a;
+		try {
+			a = SOCKET_CHANNEL.get().getRemoteAddress();
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+
+		var l = lines.getFirst();
+
+		IO.println(dt + " " + a + " " + l.substring(l.indexOf(' ') + 1));
+	}
+
+	@Override
+	protected void handleEndHeaders2(List<Frame> frames, FrameTransfer transfer) {
+		var dt = LocalDateTime.now();
+
+		SocketAddress a;
+		try {
+			a = SOCKET_CHANNEL.get().getRemoteAddress();
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+
+		var s = frames.stream().flatMap(x -> x instanceof HeadersFrame y ? y.fields().stream() : Stream.empty())
+				.filter(x -> x.name().equals(":method") || x.name().equals(":path"))
+				.sorted(Comparator.comparing(x -> x.name())).map(x -> x.value()).collect(Collectors.joining(" "));
+
+		IO.println(dt + " " + a + " " + s);
 	}
 
 	@Override
 	protected HttpExchange createExchange(HttpRequest request, HttpResponse response) {
-		var a = application.application(request.getAuthority());
-		if (request.getPath().startsWith("/api/")) {
-			var p = Reflection.property(a.getClass(), "backend");
-			if (p != null)
-				a = p.get(a);
-		} else {
-			var p = Reflection.property(a.getClass(), "frontend");
-			if (p != null)
-				a = p.get(a);
-		}
-//		IO.println("a=" + a);
-		var f = a == application ? application.diFactory()
-				: (DiFactory) Reflection.property(a.getClass(), "diFactory").get(a);
-		return Optional.ofNullable(f.create(HttpExchange.class, Map.of("request", request, "response", response)))
+		var a = request.getPath().startsWith("/api/") ? backend.application(request.getAuthority())
+				: frontend.application(request.getAuthority());
+//		IO.println("CustomHttpServer.createExchange, a=" + a);
+		var f = (DiFactory) Reflection.property(a.getClass(), "diFactory").get(a);
+		return Optional
+				.<HttpExchange>ofNullable(
+						f.create(f.actualType(HttpExchange.class), Map.of("request", request, "response", response)))
 				.orElseGet(() -> super.createExchange(request, response));
 	}
 }

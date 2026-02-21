@@ -26,6 +26,7 @@ package com.janilla.janillacom.backend;
 
 import com.janilla.backend.cms.DocumentReference;
 import com.janilla.backend.cms.Types;
+import com.janilla.janillacom.base.Application;
 import com.janilla.websitetemplate.backend.Link;
 import com.janilla.websitetemplate.backend.LinkAppearance;
 import com.janilla.websitetemplate.backend.LinkType;

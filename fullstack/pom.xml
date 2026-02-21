@@ -4,6 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>janilla-com-fullstack</artifactId>
 	<dependencies>
+		<!--
 		<dependency>
 			<groupId>com.janilla</groupId>
 			<artifactId>janilla-acme-dashboard-fullstack</artifactId>
@@ -19,6 +20,7 @@
 			<artifactId>janilla-blank-template-fullstack</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>com.janilla</groupId>
 			<artifactId>janilla-com-backend</artifactId>
@@ -29,6 +31,7 @@
 			<artifactId>janilla-com-frontend</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>com.janilla</groupId>
 			<artifactId>janilla-conduit-fullstack</artifactId>
@@ -41,7 +44,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.janilla</groupId>
-			<artifactId>janilla-petclinic</artifactId>
+			<artifactId>janilla-petclinic-fullstack</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -49,6 +52,7 @@
 			<artifactId>janilla-todomvc-main</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>com.janilla</groupId>
 			<artifactId>janilla-website-template-fullstack</artifactId>
