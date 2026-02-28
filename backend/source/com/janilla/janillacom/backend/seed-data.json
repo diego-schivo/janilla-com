@@ -133,7 +133,10 @@
 						"appearance": "DEFAULT"
 					}
 				],
-				"media": 1
+				"media": {
+					"$type": "Media",
+					"id": 1
+				}
 			},
 			"layout": [
 				{
@@ -218,7 +221,10 @@
 				"$type": "Meta",
 				"title": "Janilla Website Template",
 				"description": "An open-source website built with Janilla.",
-				"image": 4
+				"image": {
+					"$type": "Media",
+					"id": 4
+				}
 			},
 			"slug": "home",
 			"documentStatus": {

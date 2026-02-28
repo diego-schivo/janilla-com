@@ -27,31 +27,32 @@ package com.janilla.janillacom.backend;
 import java.time.Instant;
 import java.util.List;
 
-import com.janilla.backend.cms.Types;
-import com.janilla.backend.cms.Versions;
-import com.janilla.blanktemplate.backend.Media;
-import com.janilla.blanktemplate.backend.UserImpl;
+import com.janilla.blanktemplate.Media;
+import com.janilla.blanktemplate.UserImpl;
 import com.janilla.cms.DocumentStatus;
+import com.janilla.cms.Types;
+import com.janilla.cms.User;
+import com.janilla.cms.Versions;
 import com.janilla.persistence.Index;
 import com.janilla.persistence.Store;
-import com.janilla.websitetemplate.backend.Banner;
-import com.janilla.websitetemplate.backend.CallToAction;
-import com.janilla.websitetemplate.backend.Category;
-import com.janilla.websitetemplate.backend.MediaBlock;
-import com.janilla.websitetemplate.backend.Meta;
-import com.janilla.websitetemplate.backend.Post;
-import com.janilla.websitetemplate.backend.RichText;
+import com.janilla.websitetemplate.Banner;
+import com.janilla.websitetemplate.CallToAction;
+import com.janilla.websitetemplate.Category;
+import com.janilla.websitetemplate.MediaBlock;
+import com.janilla.websitetemplate.Meta;
+import com.janilla.websitetemplate.Post;
+import com.janilla.websitetemplate.RichText;
 
 @Store
 @Versions(drafts = true)
-public record PostImpl(Long id, String title, @Types(Media.class) Long heroImage, List<@Types( {
+public record PostImpl(Long id, String title, Media heroImage, List<@Types( {
 		Banner.class, CallToAction.class, MediaBlock.class, RichText.class }) Object> content,
-		List<@Types(PostImpl.class) Long> relatedPosts, List<@Types(Category.class) Long> categories, Meta meta,
-		@Index String slug, List<@Types(UserImpl.class) Long> authors, Instant createdAt, Instant updatedAt,
+		List<@Types(PostImpl.class) Post> relatedPosts, List<Category> categories, Meta meta, @Index String slug,
+		List<@Types(UserImpl.class) User<?, ?>> authors, Instant createdAt, Instant updatedAt,
 		DocumentStatus documentStatus, Instant publishedAt) implements Post{
 
 	@Override
-	public PostImpl withRelatedPosts(List<Long> relatedPosts) {
+	public PostImpl withRelatedPosts(List<Post> relatedPosts) {
 		return new PostImpl(id, title, heroImage, content, relatedPosts, categories, meta, slug, authors, createdAt,
 				updatedAt, documentStatus, publishedAt);
 	}

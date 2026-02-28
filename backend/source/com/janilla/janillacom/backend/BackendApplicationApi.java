@@ -30,20 +30,27 @@ import java.util.function.Predicate;
 import com.janilla.backend.cms.AbstractCollectionApi;
 import com.janilla.backend.persistence.Persistence;
 import com.janilla.http.HttpExchange;
-import com.janilla.janillacom.base.Application;
-import com.janilla.janillacom.base.ApplicationApi;
+import com.janilla.janillacom.Application;
+import com.janilla.janillacom.ApplicationApi;
+import com.janilla.persistence.ListPortion;
 import com.janilla.web.Handle;
 
 @Handle(path = "/api/applications")
 public class BackendApplicationApi extends AbstractCollectionApi<Long, Application> implements ApplicationApi {
 
 	public BackendApplicationApi(Predicate<HttpExchange> drafts, Persistence persistence) {
-		super(Application.class, drafts, persistence);
+		super(Application.class, drafts, persistence, "title");
 	}
 
 	@Override
 	@Handle(method = "GET")
-	public List<Application> read(String slug, Long skip, Long limit) {
-		return slug != null ? crud().read(crud().filter("slug", new Object[] { slug })) : read(skip, limit);
+	public ListPortion<Application> read(String slug, String search, Boolean reverse, Long skip, Long limit,
+			Integer depth) {
+		if (slug != null) {
+			var ll = crud().filter("slug", new Object[] { slug });
+			var a = !ll.isEmpty() ? crud().read(ll.getFirst(), depth != null ? depth : 0) : null;
+			return a != null ? new ListPortion<>(List.of(a), 1) : ListPortion.empty();
+		}
+		return read(search, reverse, skip, limit, depth);
 	}
 }

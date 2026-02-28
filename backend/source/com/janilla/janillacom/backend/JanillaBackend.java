@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DiFactory;
-import com.janilla.janillacom.base.Application;
+import com.janilla.janillacom.Application;
 import com.janilla.java.Java;
 import com.janilla.java.Reflection;
 import com.janilla.websitetemplate.backend.WebsiteBackend;
@@ -18,7 +18,7 @@ import com.janilla.websitetemplate.backend.WebsiteBackend;
 public class JanillaBackend extends WebsiteBackend {
 
 	public static final String[] DI_PACKAGES = Stream.concat(Arrays.stream(WebsiteBackend.DI_PACKAGES),
-			Stream.of("com.janilla.janillacom.base", "com.janilla.janillacom.backend")).toArray(String[]::new);
+			Stream.of("com.janilla.janillacom", "com.janilla.janillacom.backend")).toArray(String[]::new);
 
 	public static void main(String[] args) {
 		IO.println(ProcessHandle.current().pid());
@@ -48,7 +48,7 @@ public class JanillaBackend extends WebsiteBackend {
 			Application a;
 			{
 				var c = persistence.crud(Application.class);
-				a = c.read(c.find("slug", k));
+				a = c.read(c.find("slug", new Object[] { k }));
 			}
 //			IO.println("JanillaBackend.application, a=" + a);
 			if (a != null)

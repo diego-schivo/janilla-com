@@ -1,6 +1,7 @@
 package com.janilla.janillacom.fullstack;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -32,18 +33,13 @@ public class JanillaFullstack extends WebsiteFullstack {
 
 	@Override
 	protected List<Class<?>> backendTypes() {
-		return Stream.concat(super.backendTypes().stream(),
-				Stream.of("com.janilla.janillacom.base", JanillaBackend.class.getPackageName(),
-						JanillaFullstack.class.getPackageName())
-						.flatMap(x -> Java.getPackageClasses(x, false).stream()))
-				.toList();
+		return Stream.concat(Arrays.stream(JanillaBackend.DI_PACKAGES), Stream.of("com.janilla.janillacom.fullstack"))
+				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList();
 	}
 
 	@Override
 	protected List<Class<?>> frontendTypes() {
-		return Stream.concat(super.frontendTypes().stream(),
-				Stream.of(JanillaFrontend.class.getPackageName(), JanillaFullstack.class.getPackageName())
-						.flatMap(x -> Java.getPackageClasses(x, false).stream()))
-				.toList();
+		return Stream.concat(Arrays.stream(JanillaFrontend.DI_PACKAGES), Stream.of("com.janilla.janillacom.fullstack"))
+				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList();
 	}
 }

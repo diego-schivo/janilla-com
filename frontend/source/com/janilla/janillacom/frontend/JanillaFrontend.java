@@ -13,7 +13,7 @@ import com.janilla.blanktemplate.frontend.BlankFrontend;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DiFactory;
-import com.janilla.janillacom.base.ApplicationApi;
+import com.janilla.janillacom.ApplicationApi;
 import com.janilla.java.Java;
 import com.janilla.java.Reflection;
 import com.janilla.websitetemplate.frontend.WebsiteFrontend;
@@ -52,7 +52,7 @@ public class JanillaFrontend extends WebsiteFrontend {
 			return this;
 		return applications.computeIfAbsent(authority.substring(0, authority.length() - s.length()), k -> {
 //			IO.println("JanillaFrontend.application, k=" + k);
-			var a = applicationApi.read(k, null, null).getFirst();
+			var a = applicationApi.read(k, null, null, null, null, null).elements().getFirst();
 //			IO.println("JanillaFrontend.application, a=" + a);
 			if (a != null)
 				try {

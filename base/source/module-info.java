@@ -24,9 +24,9 @@
  */
 module com.janilla.janillacom.base {
 
-	exports com.janilla.janillacom.base;
+	exports com.janilla.janillacom;
 
-	opens com.janilla.janillacom.base;
+	opens com.janilla.janillacom;
 
 	requires transitive com.janilla.base;
 }

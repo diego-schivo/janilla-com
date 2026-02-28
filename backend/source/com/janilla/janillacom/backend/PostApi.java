@@ -29,10 +29,10 @@ import java.util.function.Predicate;
 import com.janilla.backend.persistence.Persistence;
 import com.janilla.http.HttpExchange;
 import com.janilla.web.Handle;
-import com.janilla.websitetemplate.backend.PostApi0;
+import com.janilla.websitetemplate.backend.AbstractPostApi;
 
 @Handle(path = "/api/posts")
-public class PostApi extends PostApi0<PostImpl> {
+public class PostApi extends AbstractPostApi<PostImpl> {
 
 	public PostApi(Predicate<HttpExchange> drafts, Persistence persistence) {
 		super(PostImpl.class, drafts, persistence);

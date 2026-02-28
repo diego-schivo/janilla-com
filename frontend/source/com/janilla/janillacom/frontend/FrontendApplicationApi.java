@@ -8,11 +8,12 @@ import com.janilla.cms.Version;
 import com.janilla.http.HttpClient;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpRequest;
-import com.janilla.janillacom.base.Application;
-import com.janilla.janillacom.base.ApplicationApi;
+import com.janilla.janillacom.Application;
+import com.janilla.janillacom.ApplicationApi;
 import com.janilla.java.Converter;
 import com.janilla.java.SimpleParameterizedType;
 import com.janilla.java.UriQueryBuilder;
+import com.janilla.persistence.ListPortion;
 
 public class FrontendApplicationApi implements ApplicationApi {
 
@@ -31,12 +32,12 @@ public class FrontendApplicationApi implements ApplicationApi {
 	}
 
 	@Override
-	public List<Application> read(Long skip, Long limit) {
+	public Application read(Long id, Integer depth, HttpExchange exchange) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Application read(Long id, HttpExchange exchange) {
+	public ListPortion<Application> read(String search, Boolean reverse, Long skip, Long limit, Integer depth) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -81,11 +82,15 @@ public class FrontendApplicationApi implements ApplicationApi {
 	}
 
 	@Override
-	public List<Application> read(String slug, Long skip, Long limit) {
+	public ListPortion<Application> read(String slug, String search, Boolean reverse, Long skip, Long limit,
+			Integer depth) {
 		var u = URI.create(configuration.getProperty("janilla-com.api.url") + "/applications?"
-				+ new UriQueryBuilder().append("slug", slug).append("skip", skip != null ? skip.toString() : null)
-						.append("limit", limit != null ? limit.toString() : null));
+				+ new UriQueryBuilder().append("slug", slug).append("search", search)
+						.append("reverse", reverse != null ? reverse.toString() : null)
+						.append("skip", skip != null ? skip.toString() : null)
+						.append("limit", limit != null ? limit.toString() : null)
+						.append("depth", depth != null ? depth.toString() : null));
 		var o = httpClient.send(new HttpRequest("GET", u), HttpClient.JSON);
-		return new Converter().convert(o, new SimpleParameterizedType(List.class, List.of(Application.class)));
+		return new Converter().convert(o, new SimpleParameterizedType(ListPortion.class, List.of(Application.class)));
 	}
 }
