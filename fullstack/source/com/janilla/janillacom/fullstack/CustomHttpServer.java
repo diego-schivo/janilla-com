@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.SocketAddress;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +79,7 @@ public class CustomHttpServer extends HttpServer {
 
 		var l = lines.getFirst();
 
-		IO.println(dt + " " + a + " " + l.substring(l.indexOf(' ') + 1));
+		IO.println(dt.truncatedTo(ChronoUnit.SECONDS) + " " + a + " " + l);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class CustomHttpServer extends HttpServer {
 				.filter(x -> x.name().equals(":method") || x.name().equals(":path"))
 				.sorted(Comparator.comparing(x -> x.name())).map(x -> x.value()).collect(Collectors.joining(" "));
 
-		IO.println(dt + " " + a + " " + s);
+		IO.println(dt.truncatedTo(ChronoUnit.SECONDS) + " " + a + " " + s);
 	}
 
 	@Override
