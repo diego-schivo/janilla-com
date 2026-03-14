@@ -9,10 +9,11 @@ import java.util.stream.Stream;
 
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
+import com.janilla.ioc.DefaultDiFactory;
 import com.janilla.ioc.DiFactory;
 import com.janilla.janillacom.Application;
 import com.janilla.java.Java;
-import com.janilla.java.Reflection;
+import com.janilla.java.JavaReflect;
 import com.janilla.websitetemplate.backend.WebsiteBackend;
 
 public class JanillaBackend extends WebsiteBackend {
@@ -22,7 +23,7 @@ public class JanillaBackend extends WebsiteBackend {
 
 	public static void main(String[] args) {
 		IO.println(ProcessHandle.current().pid());
-		var f = new DiFactory(
+		var f = new DefaultDiFactory(
 				Arrays.stream(DI_PACKAGES).flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 		serve(f, JanillaBackend.class, args.length > 0 ? args[0] : null);
 	}
@@ -54,11 +55,11 @@ public class JanillaBackend extends WebsiteBackend {
 			if (a != null)
 				try {
 					var c = Class.forName(a.backend());
-					var f = new DiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
+					var f = new DefaultDiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
 							.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 					var cf = configurationFile != null ? configurationFile
 							: Path.of(JanillaBackend.class.getResource("configuration.properties").toURI());
-					return f.create(c, Java.hashMap("diFactory", f, "configurationFile", cf));
+					return f.newInstance(c, Java.hashMap("diFactory", f, "configurationFile", cf));
 				} catch (ReflectiveOperationException | URISyntaxException e) {
 					throw new RuntimeException(e);
 				}
@@ -67,7 +68,7 @@ public class JanillaBackend extends WebsiteBackend {
 	}
 
 	@Override
-	protected Class<?> dataClass() {
+	protected Class<?> dataType() {
 		return Data.class;
 	}
 
@@ -76,6 +77,6 @@ public class JanillaBackend extends WebsiteBackend {
 //		IO.println("JanillaBackend.handle, exchange=" + exchange);
 		var a = application(exchange.request().getAuthority());
 		return a == this ? super.handle(exchange)
-				: ((HttpHandler) Reflection.property(a.getClass(), "handler").get(a)).handle(exchange);
+				: ((HttpHandler) JavaReflect.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}
 }

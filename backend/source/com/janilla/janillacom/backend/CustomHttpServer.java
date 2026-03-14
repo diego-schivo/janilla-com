@@ -35,7 +35,7 @@ import com.janilla.http.HttpRequest;
 import com.janilla.http.HttpResponse;
 import com.janilla.http.HttpServer;
 import com.janilla.ioc.DiFactory;
-import com.janilla.java.Reflection;
+import com.janilla.java.JavaReflect;
 
 public class CustomHttpServer extends HttpServer {
 
@@ -51,8 +51,8 @@ public class CustomHttpServer extends HttpServer {
 	protected HttpExchange createExchange(HttpRequest request, HttpResponse response) {
 		var a = application.application(request.getAuthority());
 //		IO.println("CustomHttpServer.createExchange, a=" + a);
-		var f = (DiFactory) Reflection.property(a.getClass(), "diFactory").get(a);
-		var e = f.create(f.actualType(HttpExchange.class), Map.of("request", request, "response", response));
+		var f = (DiFactory) JavaReflect.property(a.getClass(), "diFactory").get(a);
+		var e = f.newInstance(f.classFor(HttpExchange.class), Map.of("request", request, "response", response));
 		return e != null ? e : super.createExchange(request, response);
 	}
 }

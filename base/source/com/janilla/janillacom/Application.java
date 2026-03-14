@@ -24,14 +24,19 @@
  */
 package com.janilla.janillacom;
 
-import java.time.Instant;
-
 import com.janilla.cms.Document;
-import com.janilla.cms.DocumentStatus;
 import com.janilla.persistence.Index;
 import com.janilla.persistence.Store;
 
 @Store
-public record Application(Long id, String title, @Index String slug, String frontend, String backend, Instant createdAt,
-		Instant updatedAt, DocumentStatus documentStatus, Instant publishedAt) implements Document<Long> {
+public interface Application extends Document<Long> {
+
+	String title();
+
+	@Index
+	String slug();
+
+	String frontend();
+
+	String backend();
 }

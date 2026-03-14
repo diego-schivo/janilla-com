@@ -4,16 +4,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Stream;
 
-import com.janilla.blanktemplate.frontend.Index.Template;
+import com.janilla.frontend.Template;
+import com.janilla.frontend.cms.CmsDataFetching;
 import com.janilla.web.ResourceMap;
-import com.janilla.websitetemplate.frontend.WebsiteDataFetching;
 import com.janilla.websitetemplate.frontend.WebsiteIndexFactory;
 
-public class IndexFactory extends WebsiteIndexFactory {
+public class JanillaIndexFactory extends WebsiteIndexFactory {
 
-	public IndexFactory(Properties configuration, String configurationKey, WebsiteDataFetching dataFetching,
-			ResourceMap resourceMap) {
-		super(configuration, configurationKey, dataFetching, resourceMap);
+	public JanillaIndexFactory(ResourceMap resourceMap, CmsDataFetching dataFetching, Properties configuration,
+			String configurationKey) {
+		super(resourceMap, dataFetching, configuration, configurationKey);
 	}
 
 	@Override

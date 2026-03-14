@@ -22,37 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.janillacom.frontend;
+package com.janilla.janillacom;
 
-import java.net.SocketAddress;
-import java.util.Map;
+import java.time.Instant;
 
-import javax.net.ssl.SSLContext;
+import com.janilla.cms.DocumentStatus;
 
-import com.janilla.http.HttpExchange;
-import com.janilla.http.HttpHandler;
-import com.janilla.http.HttpRequest;
-import com.janilla.http.HttpResponse;
-import com.janilla.http.HttpServer;
-import com.janilla.ioc.DiFactory;
-import com.janilla.java.JavaReflect;
-
-public class CustomHttpServer extends HttpServer {
-
-	protected final JanillaFrontend application;
-
-	public CustomHttpServer(SSLContext sslContext, SocketAddress endpoint, HttpHandler handler,
-			JanillaFrontend application) {
-		super(sslContext, endpoint, handler);
-		this.application = application;
-	}
-
-	@Override
-	protected HttpExchange createExchange(HttpRequest request, HttpResponse response) {
-		var a = application.application(request.getAuthority());
-//		IO.println("CustomHttpServer.createExchange, a=" + a);
-		var f = (DiFactory) JavaReflect.property(a.getClass(), "diFactory").get(a);
-		var e = f.newInstance(f.classFor(HttpExchange.class), Map.of("request", request, "response", response));
-		return e != null ? e : super.createExchange(request, response);
-	}
+record ApplicationImpl(Long id, String title, String slug, String frontend, String backend, Instant createdAt,
+		Instant updatedAt, DocumentStatus documentStatus, Instant publishedAt) implements Application {
 }

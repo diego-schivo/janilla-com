@@ -27,18 +27,19 @@ package com.janilla.janillacom.backend;
 import java.util.List;
 
 import com.janilla.blanktemplate.Media;
-import com.janilla.blanktemplate.UserImpl;
+import com.janilla.cms.User;
 import com.janilla.janillacom.Application;
 import com.janilla.websitetemplate.Category;
 import com.janilla.websitetemplate.Footer;
 import com.janilla.websitetemplate.Form;
 import com.janilla.websitetemplate.Header;
 import com.janilla.websitetemplate.Page;
+import com.janilla.websitetemplate.Post;
 import com.janilla.websitetemplate.SearchResult;
 import com.janilla.websitetemplate.backend.FormSubmission;
 import com.janilla.websitetemplate.backend.Redirect;
 
 public record SeedData(List<Application> applications, List<Category> categories, Footer footer,
 		List<FormSubmission> formSubmissions, List<Form> forms, Header header, List<Media> media, List<Page> pages,
-		List<PostImpl> posts, List<Redirect> redirects, List<SearchResult> searchResults, List<UserImpl> users) {
+		List<Post> posts, List<Redirect> redirects, List<SearchResult> searchResults, List<User<?>> users) {
 }

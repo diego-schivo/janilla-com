@@ -50,7 +50,7 @@ import com.janilla.ioc.Context;
 import com.janilla.ioc.DiFactory;
 import com.janilla.janillacom.backend.JanillaBackend;
 import com.janilla.janillacom.frontend.JanillaFrontend;
-import com.janilla.java.Reflection;
+import com.janilla.java.JavaReflect;
 
 @Context("fullstack")
 public class CustomHttpServer extends HttpServer {
@@ -105,10 +105,10 @@ public class CustomHttpServer extends HttpServer {
 		var a = request.getPath().startsWith("/api/") ? backend.application(request.getAuthority())
 				: frontend.application(request.getAuthority());
 //		IO.println("CustomHttpServer.createExchange, a=" + a);
-		var f = (DiFactory) Reflection.property(a.getClass(), "diFactory").get(a);
+		var f = (DiFactory) JavaReflect.property(a.getClass(), "diFactory").get(a);
 		return Optional
 				.<HttpExchange>ofNullable(
-						f.create(f.actualType(HttpExchange.class), Map.of("request", request, "response", response)))
+						f.newInstance(f.classFor(HttpExchange.class), Map.of("request", request, "response", response)))
 				.orElseGet(() -> super.createExchange(request, response));
 	}
 }

@@ -5,15 +5,16 @@ import java.util.Properties;
 
 import com.janilla.backend.sqlite.SqliteDatabase;
 import com.janilla.ioc.DiFactory;
-import com.janilla.java.TypeResolver;
+import com.janilla.java.Converter;
 import com.janilla.persistence.Entity;
 import com.janilla.websitetemplate.backend.WebsitePersistence;
 
 public class JanillaPersistence extends WebsitePersistence {
 
 	public JanillaPersistence(SqliteDatabase database, List<Class<? extends Entity<?>>> storables,
-			TypeResolver typeResolver, DiFactory diFactory, Properties configuration, String configurationKey) {
-		super(database, storables, typeResolver, diFactory, configuration, configurationKey);
+//			TypeResolver typeResolver, 
+			Converter converter, DiFactory diFactory, Properties configuration, String configurationKey) {
+		super(database, storables, converter, diFactory, configuration, configurationKey);
 	}
 
 	@Override

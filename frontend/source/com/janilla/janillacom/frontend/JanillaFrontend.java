@@ -12,10 +12,11 @@ import java.util.stream.Stream;
 import com.janilla.blanktemplate.frontend.BlankFrontend;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
+import com.janilla.ioc.DefaultDiFactory;
 import com.janilla.ioc.DiFactory;
 import com.janilla.janillacom.ApplicationApi;
 import com.janilla.java.Java;
-import com.janilla.java.Reflection;
+import com.janilla.java.JavaReflect;
 import com.janilla.websitetemplate.frontend.WebsiteFrontend;
 
 public class JanillaFrontend extends WebsiteFrontend {
@@ -26,7 +27,7 @@ public class JanillaFrontend extends WebsiteFrontend {
 
 	public static void main(String[] args) {
 		IO.println(ProcessHandle.current().pid());
-		var f = new DiFactory(
+		var f = new DefaultDiFactory(
 				Arrays.stream(DI_PACKAGES).flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 		serve(f, JanillaFrontend.class, args.length > 0 ? args[0] : null);
 	}
@@ -38,7 +39,7 @@ public class JanillaFrontend extends WebsiteFrontend {
 	public JanillaFrontend(DiFactory diFactory, Path configurationFile) {
 		super(diFactory, configurationFile, "janilla-com");
 
-		applicationApi = diFactory.create(diFactory.actualType(ApplicationApi.class));
+		applicationApi = diFactory.newInstance(diFactory.classFor(ApplicationApi.class));
 	}
 
 	public JanillaFrontend application() {
@@ -57,11 +58,11 @@ public class JanillaFrontend extends WebsiteFrontend {
 			if (a != null)
 				try {
 					var c = Class.forName(a.frontend());
-					var f = new DiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
+					var f = new DefaultDiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
 							.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 					var cf = configurationFile != null ? configurationFile
 							: Path.of(JanillaFrontend.class.getResource("configuration.properties").toURI());
-					return f.create(c, Java.hashMap("diFactory", f, "configurationFile", cf));
+					return f.newInstance(c, Java.hashMap("diFactory", f, "configurationFile", cf));
 				} catch (ReflectiveOperationException | URISyntaxException e) {
 					throw new RuntimeException(e);
 				}
@@ -74,7 +75,7 @@ public class JanillaFrontend extends WebsiteFrontend {
 //		IO.println("JanillaFrontend.handle, exchange=" + exchange);
 		var a = application(exchange.request().getAuthority());
 		return a == this ? super.handle(exchange)
-				: ((HttpHandler) Reflection.property(a.getClass(), "handler").get(a)).handle(exchange);
+				: ((HttpHandler) JavaReflect.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}
 
 	@Override
