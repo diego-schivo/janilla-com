@@ -22,34 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.janillacom.backend;
+package com.janilla.janillacom.frontend;
 
+import java.net.URI;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Properties;
 
-import com.janilla.backend.cms.AbstractCollectionApi;
-import com.janilla.backend.persistence.Persistence;
-import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpClient;
+import com.janilla.http.HttpRequest;
 import com.janilla.janillacom.Application;
+import com.janilla.java.Converter;
+import com.janilla.java.SimpleParameterizedType;
+import com.janilla.java.UriQueryBuilder;
 import com.janilla.persistence.ListPortion;
-import com.janilla.web.Handle;
+import com.janilla.websitetemplate.frontend.WebsiteDataFetching;
 
-@Handle(path = "/api/applications")
-public class BackendApplicationApi extends AbstractCollectionApi<Long, Application> {// implements ApplicationApi {
+public class JanillaDataFetching extends WebsiteDataFetching {
 
-	public BackendApplicationApi(Predicate<HttpExchange> drafts, Persistence persistence) {
-		super(Application.class, drafts, persistence, "title");
+	public JanillaDataFetching(Properties configuration, String configurationKey, HttpClient httpClient,
+			Converter converter) {
+		super(configuration, configurationKey, httpClient, converter);
 	}
 
-//	@Override
-	@Handle(method = "GET")
-	public ListPortion<Application> read(String slug, String search, Boolean reverse, Long skip, Long limit,
+	public ListPortion<Application> applications(String slug, String search, Boolean reverse, Long skip, Long limit,
 			Integer depth) {
-		if (slug != null) {
-			var ll = crud().filter("slug", new Object[] { slug });
-			var a = !ll.isEmpty() ? crud().read(ll.getFirst(), depth != null ? depth : 0) : null;
-			return a != null ? new ListPortion<>(List.of(a), 1) : ListPortion.empty();
-		}
-		return read(search, reverse, skip, limit, depth);
+		var u = URI.create(apiUrl + "/applications?"
+				+ new UriQueryBuilder().append("slug", slug).append("search", search)
+						.append("reverse", reverse != null ? reverse.toString() : null)
+						.append("skip", skip != null ? skip.toString() : null)
+						.append("limit", limit != null ? limit.toString() : null)
+						.append("depth", depth != null ? depth.toString() : null));
+		var o = httpClient.send(new HttpRequest("GET", u), HttpClient.JSON);
+		return converter.convert(o, new SimpleParameterizedType(ListPortion.class, List.of(Application.class)));
 	}
 }

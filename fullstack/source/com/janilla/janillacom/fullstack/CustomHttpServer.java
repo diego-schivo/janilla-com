@@ -32,7 +32,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -106,9 +105,8 @@ public class CustomHttpServer extends HttpServer {
 				: frontend.application(request.getAuthority());
 //		IO.println("CustomHttpServer.createExchange, a=" + a);
 		var f = (DiFactory) JavaReflect.property(a.getClass(), "diFactory").get(a);
-		return Optional
-				.<HttpExchange>ofNullable(
-						f.newInstance(f.classFor(HttpExchange.class), Map.of("request", request, "response", response)))
-				.orElseGet(() -> super.createExchange(request, response));
+		var c = f.classFor(HttpExchange.class);
+		return c != null ? f.newInstance(c, Map.of("request", request, "response", response))
+				: super.createExchange(request, response);
 	}
 }

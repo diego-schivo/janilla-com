@@ -1,29 +1,24 @@
 package com.janilla.janillacom.frontend;
 
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import com.janilla.blanktemplate.frontend.BlankFrontend;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DefaultDiFactory;
 import com.janilla.ioc.DiFactory;
-import com.janilla.janillacom.ApplicationApi;
 import com.janilla.java.Java;
 import com.janilla.java.JavaReflect;
 import com.janilla.websitetemplate.frontend.WebsiteFrontend;
 
 public class JanillaFrontend extends WebsiteFrontend {
 
-	public static final String[] DI_PACKAGES = Stream
-			.concat(Arrays.stream(WebsiteFrontend.DI_PACKAGES), Stream.of("com.janilla.janillacom.frontend"))
-			.toArray(String[]::new);
+	public static final String[] DI_PACKAGES = Stream.concat(Arrays.stream(WebsiteFrontend.DI_PACKAGES),
+			Stream.of("com.janilla.janillacom", "com.janilla.janillacom.frontend")).toArray(String[]::new);
 
 	public static void main(String[] args) {
 		IO.println(ProcessHandle.current().pid());
@@ -32,14 +27,14 @@ public class JanillaFrontend extends WebsiteFrontend {
 		serve(f, JanillaFrontend.class, args.length > 0 ? args[0] : null);
 	}
 
-	protected final ApplicationApi applicationApi;
+//	protected final ApplicationApi applicationApi;
 
 	protected final Map<String, Object> applications = new ConcurrentHashMap<>();
 
 	public JanillaFrontend(DiFactory diFactory, Path configurationFile) {
 		super(diFactory, configurationFile, "janilla-com");
 
-		applicationApi = diFactory.newInstance(diFactory.classFor(ApplicationApi.class));
+//		applicationApi = diFactory.newInstance(diFactory.classFor(ApplicationApi.class));
 	}
 
 	public JanillaFrontend application() {
@@ -53,7 +48,8 @@ public class JanillaFrontend extends WebsiteFrontend {
 			return this;
 		return applications.computeIfAbsent(authority.substring(0, authority.length() - s.length()), k -> {
 //			IO.println("JanillaFrontend.application, k=" + k);
-			var a = applicationApi.read(k, null, null, null, null, null).elements().getFirst();
+			var a = ((JanillaDataFetching) dataFetching).applications(k, null, null, null, null, null).elements()
+					.getFirst();
 //			IO.println("JanillaFrontend.application, a=" + a);
 			if (a != null)
 				try {
@@ -78,16 +74,23 @@ public class JanillaFrontend extends WebsiteFrontend {
 				: ((HttpHandler) JavaReflect.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}
 
+//	@Override
+//	protected Map<String, List<Path>> resourcePaths() {
+//		var pp1 = Java.getPackagePaths("com.janilla.frontend", false).filter(Files::isRegularFile).toList();
+//		var pp2 = Java.getPackagePaths("com.janilla.frontend.cms", false).filter(Files::isRegularFile).toList();
+//		var pp3 = Java.getPackagePaths(BlankFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+//				.toList();
+//		var pp4 = Java.getPackagePaths(WebsiteFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+//				.toList();
+//		var pp5 = Java.getPackagePaths(JanillaFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
+//				.toList();
+//		return Map.of("/base", pp1, "/cms", pp2, "/blank", pp3, "/website", pp4, "", pp5);
+//	}
+
 	@Override
-	protected Map<String, List<Path>> resourcePaths() {
-		var pp1 = Java.getPackagePaths("com.janilla.frontend", false).filter(Files::isRegularFile).toList();
-		var pp2 = Java.getPackagePaths("com.janilla.frontend.cms", false).filter(Files::isRegularFile).toList();
-		var pp3 = Java.getPackagePaths(BlankFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
-				.toList();
-		var pp4 = Java.getPackagePaths(WebsiteFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
-				.toList();
-		var pp5 = Java.getPackagePaths(JanillaFrontend.class.getPackageName(), false).filter(Files::isRegularFile)
-				.toList();
-		return Map.of("/base", pp1, "/cms", pp2, "/blank", pp3, "/website", pp4, "", pp5);
+	protected void putResourcePrefixes() {
+		super.putResourcePrefixes();
+		resourcePrefixes.put("com.janilla.websitetemplate.frontend", "/website");
+		resourcePrefixes.put("com.janilla.janillacom.frontend", "");
 	}
 }

@@ -71,19 +71,28 @@
 		"navItems": [
 			{
 				"$type": "LinkImpl",
-				"type": "CUSTOM",
+				"type": {
+					"$type": "LinkType",
+					"name": "CUSTOM"
+				},
 				"uri": "/admin",
 				"text": "Admin"
 			},
 			{
 				"$type": "LinkImpl",
-				"type": "CUSTOM",
+				"type": {
+					"$type": "LinkType",
+					"name": "CUSTOM"
+				},
 				"uri": "https://github.com/diego-schivo/janilla",
 				"text": "Source Code"
 			},
 			{
 				"$type": "LinkImpl",
-				"type": "CUSTOM",
+				"type": {
+					"$type": "LinkType",
+					"name": "CUSTOM"
+				},
 				"uri": "https://janilla.com/",
 				"text": "Janilla"
 			}
@@ -97,7 +106,10 @@
 		"navItems": [
 			{
 				"$type": "LinkImpl",
-				"type": "CUSTOM",
+				"type": {
+					"$type": "LinkType",
+					"name": "CUSTOM"
+				},
 				"uri": "https://github.com/diego-schivo/janilla",
 				"text": "Source Code"
 			}
@@ -122,15 +134,24 @@
 			"title": "Home",
 			"hero": {
 				"$type": "Hero",
-				"type": "HIGH_IMPACT",
+				"type": {
+					"$type": "HeroType",
+					"name": "HIGH_IMPACT"
+				},
 				"richText": "<h1>The vanilla foundation to build the lightweight web</h1><p>Janilla leverages standard technologies and principles to let you develop overengineering-free equivalent of web applications relying on heavy frameworks.</p>",
 				"links": [
 					{
 						"$type": "LinkImpl",
-						"type": "CUSTOM",
+						"type": {
+							"$type": "LinkType",
+							"name": "CUSTOM"
+						},
 						"uri": "https://github.com/diego-schivo/janilla",
 						"text": "Source Code",
-						"appearance": "DEFAULT"
+						"appearance": {
+							"$type": "LinkAppearance",
+							"name": "DEFAULT"
+						}
 					}
 				],
 				"media": {
