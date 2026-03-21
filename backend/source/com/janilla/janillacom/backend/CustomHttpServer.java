@@ -35,6 +35,7 @@ import com.janilla.http.HttpRequest;
 import com.janilla.http.HttpResponse;
 import com.janilla.http.HttpServer;
 import com.janilla.ioc.DiFactory;
+import com.janilla.janillacom.JanillaDomain;
 import com.janilla.java.JavaReflect;
 
 public class CustomHttpServer extends HttpServer {
@@ -48,8 +49,17 @@ public class CustomHttpServer extends HttpServer {
 	}
 
 	@Override
+	protected void exchange(HttpRequest request, HttpResponse response) {
+		var a1 = request.getAuthority();
+		var a2 = application.application(a1);
+//		IO.println("CustomHttpServer.exchange, a1=" + a1 + ", a2=" + a2);
+		ScopedValue.where(JanillaDomain.APPLICATION, a2).run(() -> super.exchange(request, response));
+	}
+
+	@Override
 	protected HttpExchange createExchange(HttpRequest request, HttpResponse response) {
-		var a = application.application(request.getAuthority());
+//		var a = application.application(request.getAuthority());
+		var a = JanillaDomain.APPLICATION.get();
 //		IO.println("CustomHttpServer.createExchange, a=" + a);
 		var f = (DiFactory) JavaReflect.property(a.getClass(), "diFactory").get(a);
 		var e = f.newInstance(f.classFor(HttpExchange.class), Map.of("request", request, "response", response));

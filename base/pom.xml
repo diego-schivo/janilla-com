@@ -6,8 +6,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.janilla</groupId>
-			<artifactId>janilla-base</artifactId>
-			<version>11.0.0-SNAPSHOT</version>
+			<artifactId>janilla-website-template-base</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<parent>

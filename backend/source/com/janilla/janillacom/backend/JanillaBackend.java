@@ -12,6 +12,7 @@ import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DefaultDiFactory;
 import com.janilla.ioc.DiFactory;
 import com.janilla.janillacom.Application;
+import com.janilla.janillacom.JanillaDomain;
 import com.janilla.java.Java;
 import com.janilla.java.JavaReflect;
 import com.janilla.websitetemplate.backend.WebsiteBackend;
@@ -55,8 +56,10 @@ public class JanillaBackend extends WebsiteBackend {
 			if (a != null)
 				try {
 					var c = Class.forName(a.backend());
-					var f = new DefaultDiFactory(Arrays.stream((String[]) c.getDeclaredField("DI_PACKAGES").get(null))
-							.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
+					var pp = (String[]) c.getDeclaredField("DI_PACKAGES").get(null);
+//					IO.println("JanillaBackend.application, c=" + c + ", pp=" + Arrays.toString(pp));
+					var f = new DefaultDiFactory(
+							Arrays.stream(pp).flatMap(x -> Java.getPackageClasses(x, false).stream()).toList());
 					var cf = configurationFile != null ? configurationFile
 							: Path.of(JanillaBackend.class.getResource("configuration.properties").toURI());
 					return f.newInstance(c, Java.hashMap("diFactory", f, "configurationFile", cf));
@@ -75,7 +78,8 @@ public class JanillaBackend extends WebsiteBackend {
 	@Override
 	protected boolean handle(HttpExchange exchange) {
 //		IO.println("JanillaBackend.handle, exchange=" + exchange);
-		var a = application(exchange.request().getAuthority());
+//		var a = application(exchange.request().getAuthority());
+		var a = JanillaDomain.APPLICATION.get();
 		return a == this ? super.handle(exchange)
 				: ((HttpHandler) JavaReflect.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}

@@ -32,11 +32,11 @@ import com.janilla.janillacom.Application;
 import com.janilla.websitetemplate.Category;
 import com.janilla.websitetemplate.Footer;
 import com.janilla.websitetemplate.Form;
+import com.janilla.websitetemplate.FormSubmission;
 import com.janilla.websitetemplate.Header;
 import com.janilla.websitetemplate.Page;
 import com.janilla.websitetemplate.Post;
 import com.janilla.websitetemplate.SearchResult;
-import com.janilla.websitetemplate.backend.FormSubmission;
 import com.janilla.websitetemplate.backend.Redirect;
 
 public record SeedData(List<Application> applications, List<Category> categories, Footer footer,

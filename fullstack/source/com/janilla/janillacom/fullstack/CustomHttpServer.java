@@ -47,6 +47,7 @@ import com.janilla.http.HttpResponse;
 import com.janilla.http.HttpServer;
 import com.janilla.ioc.Context;
 import com.janilla.ioc.DiFactory;
+import com.janilla.janillacom.JanillaDomain;
 import com.janilla.janillacom.backend.JanillaBackend;
 import com.janilla.janillacom.frontend.JanillaFrontend;
 import com.janilla.java.JavaReflect;
@@ -100,10 +101,16 @@ public class CustomHttpServer extends HttpServer {
 	}
 
 	@Override
+	protected void exchange(HttpRequest request, HttpResponse response) {
+		var a1 = request.getAuthority();
+		var a2 = request.getPath().startsWith("/api/") ? backend.application(a1) : frontend.application(a1);
+//		IO.println("CustomHttpServer.exchange, a1=" + a1 + ", a2=" + a2);
+		ScopedValue.where(JanillaDomain.APPLICATION, a2).run(() -> super.exchange(request, response));
+	}
+
+	@Override
 	protected HttpExchange createExchange(HttpRequest request, HttpResponse response) {
-		var a = request.getPath().startsWith("/api/") ? backend.application(request.getAuthority())
-				: frontend.application(request.getAuthority());
-//		IO.println("CustomHttpServer.createExchange, a=" + a);
+		var a = JanillaDomain.APPLICATION.get();
 		var f = (DiFactory) JavaReflect.property(a.getClass(), "diFactory").get(a);
 		var c = f.classFor(HttpExchange.class);
 		return c != null ? f.newInstance(c, Map.of("request", request, "response", response))

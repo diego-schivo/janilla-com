@@ -28,5 +28,5 @@ module com.janilla.janillacom.base {
 
 	opens com.janilla.janillacom;
 
-	requires transitive com.janilla.base;
+	requires transitive com.janilla.websitetemplate.base;
 }

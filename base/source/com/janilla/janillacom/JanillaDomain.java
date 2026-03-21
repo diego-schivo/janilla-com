@@ -22,22 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.janillacom.backend;
+package com.janilla.janillacom;
 
-import java.util.List;
+import com.janilla.websitetemplate.WebsiteDomain;
 
-import com.janilla.blanktemplate.Media;
-import com.janilla.cms.User;
-import com.janilla.janillacom.Application;
-import com.janilla.websitetemplate.Category;
-import com.janilla.websitetemplate.Form;
-import com.janilla.websitetemplate.FormSubmission;
-import com.janilla.websitetemplate.Page;
-import com.janilla.websitetemplate.Post;
-import com.janilla.websitetemplate.SearchResult;
-import com.janilla.websitetemplate.backend.Redirect;
+public class JanillaDomain extends WebsiteDomain {
 
-public record Collections(List<Application> applications, List<Page> pages, List<Post> posts, List<Media> media,
-		List<Category> categories, List<User<?>> users, List<Redirect> redirects, List<Form> forms,
-		List<FormSubmission> formSubmissions, List<SearchResult> searchResults) {
+	public static final ScopedValue<Object> APPLICATION = ScopedValue.newInstance();
 }

@@ -66,18 +66,6 @@ public class JanillaFullstack extends WebsiteFullstack {
 		super(diFactory, configurationFile, "janilla-com");
 	}
 
-//	@Override
-//	protected List<Class<?>> backendTypes() {
-//		return Stream.concat(Arrays.stream(JanillaBackend.DI_PACKAGES), Stream.of("com.janilla.janillacom.fullstack"))
-//				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList();
-//	}
-//
-//	@Override
-//	protected List<Class<?>> frontendTypes() {
-//		return Stream.concat(Arrays.stream(JanillaFrontend.DI_PACKAGES), Stream.of("com.janilla.janillacom.fullstack"))
-//				.flatMap(x -> Java.getPackageClasses(x, false).stream()).toList();
-//	}
-
 	@Override
 	protected String[] diBackendPackages() {
 		return DI_BACKEND_PACKAGES;

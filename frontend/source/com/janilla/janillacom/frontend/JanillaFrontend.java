@@ -11,6 +11,7 @@ import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
 import com.janilla.ioc.DefaultDiFactory;
 import com.janilla.ioc.DiFactory;
+import com.janilla.janillacom.JanillaDomain;
 import com.janilla.java.Java;
 import com.janilla.java.JavaReflect;
 import com.janilla.websitetemplate.frontend.WebsiteFrontend;
@@ -69,7 +70,8 @@ public class JanillaFrontend extends WebsiteFrontend {
 	@Override
 	protected boolean handle(HttpExchange exchange) {
 //		IO.println("JanillaFrontend.handle, exchange=" + exchange);
-		var a = application(exchange.request().getAuthority());
+//		var a = application(exchange.request().getAuthority());
+		var a = JanillaDomain.APPLICATION.get();
 		return a == this ? super.handle(exchange)
 				: ((HttpHandler) JavaReflect.property(a.getClass(), "handler").get(a)).handle(exchange);
 	}
